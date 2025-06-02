@@ -1,0 +1,87 @@
+# ───────────────────────────────────────────────────────────
+# Miscellaneous (エディタ／OS 汎用の不要ファイル)
+# ───────────────────────────────────────────────────────────
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+Thumbs.db
+
+# エディタや履歴管理のフォルダ
+.atom/
+.history/
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# ───────────────────────────────────────────────────────────
+# IntelliJ/Android Studio 関連
+# ───────────────────────────────────────────────────────────
+*.iml
+*.ipr
+*.iws
+*.log
+.idea/
+
+# ───────────────────────────────────────────────────────────
+# VS Code 関連
+# ───────────────────────────────────────────────────────────
+.vscode/
+
+# ───────────────────────────────────────────────────────────
+# Flutter/Dart/Pub 関連
+# ───────────────────────────────────────────────────────────
+# Dart のパッケージキャッシュや自動生成ファイル
+.dart_tool/
+.packages
+package_config.json
+
+# Flutter プラグイン定義
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# pub キャッシュ (必要に応じて除外)
+# もしチームで pubspec.lock を共有しないなら、下２行を有効にしても可
+# /pubspec.lock
+# /.packages
+
+# ドキュメント API (自動生成)
+**/doc/api/
+
+# iOS 関連のビルド ID（再生成可能）
+**/ios/Flutter/.last_build_id
+
+# ビルド成果物
+/build/
+
+# iOS プロジェクトの Pods やワークスペース (CocoaPods 自動生成物)
+ios/Pods/
+ios/Runner.xcworkspace/
+ios/Runner.xcodeproj/project.xcworkspace/
+
+# iOS のサービス定義ファイル（自動生成される可能性がある場合）
+ios/ServiceDefinitions.json
+
+# Android Studio 関連のビルドキャッシュ
+android/.gradle/
+android/local.properties
+
+# Android アプリ固有のビルド結果フォルダ
+android/app/debug
+android/app/profile
+android/app/release
+
+# ───────────────────────────────────────────────────────────
+# Symbolication／Obfuscation 関連
+# ───────────────────────────────────────────────────────────
+app.*.symbols
+app.*.map.json
+
+# ───────────────────────────────────────────────────────────
+# その他ユーザー固有のファイル・フォルダ
+# ───────────────────────────────────────────────────────────
+.metadata
+
+# 企画書など（ドキュメントフォルダがリポジトリ内にある場合）
+/memo/
