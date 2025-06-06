@@ -98,6 +98,8 @@ app.*.map.json
 [Ll]ogs/
 [Mm]emoryCaptures/
 UserSettings/
+.utmp/
+
 
 # ===================================================================
 # Visual Studio / Rider / MonoDevelop generated files
