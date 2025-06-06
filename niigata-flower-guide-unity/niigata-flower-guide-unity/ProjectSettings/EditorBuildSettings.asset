@@ -6,8 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/ARDemo.unity
+    guid: 99702a2517e62844d86397ef2baba382
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
+    UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: ff3f5e8b803f8dc4190b8e4332e87cf3, type: 2}
+    UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 4ee92ad4699848b4db1b66152f7ac453, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 7449527ae5733f34d9a489386513541d, type: 2}
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: cd1d88df28155ea4d9741d84ef93483c, type: 2}
   m_UseUCBPForAssetBundles: 0
