@@ -87,3 +87,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+  assets:
+    - assets/images/flower_field.png
+    - assets/images/map_icon.png
+    - assets/images/collection_icon.png
+    - assets/images/profile_icon.png
+    - assets/images/ar_camera_icon.png
