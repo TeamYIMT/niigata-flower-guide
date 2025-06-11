@@ -83,6 +83,7 @@ class MapScreen extends StatelessWidget {
           ),
           // ボトムナビゲーションバー
           bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,  // 選択中のアイコンのラベルのみ表示
             currentIndex: 1,
             selectedItemColor: const Color(0xFF3E5C40),
             unselectedItemColor: Colors.grey,
@@ -93,6 +94,9 @@ class MapScreen extends StatelessWidget {
                   break;
                 case 1:
                   // 現在の画面なので何もしない
+                  break;
+                case 4:
+                  Navigator.pushNamed(context, '/profile');
                   break;
                 // TODO: 他の画面の遷移も実装
               }
