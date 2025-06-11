@@ -68,13 +68,13 @@ class ProfileScreen extends StatelessWidget {
                               style: TextStyle(fontSize: screenWidth * 0.04, color: Colors.black87),
                             ),
                             SizedBox(height: screenWidth * 0.08),
-                            _buildButton(Icons.edit, 'プロフィール編集', screenWidth),
+                            _buildButton(context, Icons.edit, 'プロフィール編集', screenWidth),
                             SizedBox(height: screenWidth * 0.02),
-                            _buildButton(Icons.help_outline, 'ヘルプ', screenWidth),
+                            _buildButton(context, Icons.help_outline, 'ヘルプ', screenWidth),
                             SizedBox(height: screenWidth * 0.02),
-                            _buildButton(Icons.logout, 'ログアウト', screenWidth),
+                            _buildButton(context, Icons.logout, 'ログアウト', screenWidth),
                             SizedBox(height: screenWidth * 0.02),
-                            _buildButton(Icons.lock, 'パスワード変更', screenWidth),
+                            _buildButton(context, Icons.lock, 'パスワード変更', screenWidth),
                           ],
                         ),
                       ),
@@ -115,7 +115,7 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(IconData icon, String label, double screenWidth) {
+  Widget _buildButton(BuildContext context, IconData icon, String label, double screenWidth) {
     return OutlinedButton.icon(
       icon: Icon(icon, color: _primaryGreen),
       label: Text(
@@ -135,7 +135,10 @@ class ProfileScreen extends StatelessWidget {
         ),
       ),
       onPressed: () {
-        // TODO: ボタンタップ時の処理
+        if (label == 'プロフィール編集') {
+          Navigator.pushNamed(context, '/profileedit');
+        }
+        // TODO: 他のボタンの処理
       },
     );
   }
