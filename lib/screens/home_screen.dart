@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/icon_tile.dart';
+import 'map_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -52,19 +53,20 @@ class HomeScreen extends StatelessWidget {
                   mainAxisSpacing: 12,
                   crossAxisSpacing: 12,
                   childAspectRatio: 1,
-                  children: const [
+                  children: [
                     IconTile(
                       icon: 'map_icon.png',
                       label: 'マップ',
-                      bgColor: Color(0xFF56C0B3),
-                      iconSize: 40,    // ←48→40 に縮小
-                      fontSize: 14,    // ←16→14 に縮小
-                      padding: 12,     // 少し余白を広めに取って見栄え良く
+                      bgColor: const Color(0xFF56C0B3),
+                      iconSize: 40,
+                      fontSize: 14,
+                      padding: 12,
+                      onTap: () => Navigator.pushNamed(context, '/map'),
                     ),
                     IconTile(
                       icon: 'collection_icon.png',
                       label: 'コレクション',
-                      bgColor: Color(0xFFF4C84E),
+                      bgColor: const Color(0xFFF4C84E),
                       iconSize: 40,
                       fontSize: 14,
                       padding: 12,
@@ -72,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                     IconTile(
                       icon: 'profile_icon.png',
                       label: 'プロフィール',
-                      bgColor: Color(0xFFF9A1B0),
+                      bgColor: const Color(0xFFF9A1B0),
                       iconSize: 40,
                       fontSize: 14,
                       padding: 12,
@@ -80,7 +82,7 @@ class HomeScreen extends StatelessWidget {
                     IconTile(
                       icon: 'ar_camera_icon.png',
                       label: 'ARカメラ',
-                      bgColor: Color(0xFF8DD7B2),
+                      bgColor: const Color(0xFF8DD7B2),
                       iconSize: 40,
                       fontSize: 14,
                       padding: 12,
@@ -92,8 +94,20 @@ class HomeScreen extends StatelessWidget {
           ),
           // ボトムナビゲーションはそのまま
           bottomNavigationBar: BottomNavigationBar(
+            currentIndex: 0,  // ホーム画面なので0を指定
             selectedItemColor: const Color(0xFF3E5C40),
             unselectedItemColor: Colors.grey,
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  // 現在の画面なので何もしない
+                  break;
+                case 1:
+                  Navigator.pushNamed(context, '/map');
+                  break;
+                // TODO: 他の画面の遷移も実装
+              }
+            },
             items: const [
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
               BottomNavigationBarItem(icon: Icon(Icons.map), label: 'マップ'),

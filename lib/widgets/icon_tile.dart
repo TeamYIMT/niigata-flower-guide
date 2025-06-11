@@ -6,6 +6,7 @@ class IconTile extends StatelessWidget {
   final double iconSize;  // 追加
   final double fontSize;  // 追加
   final double padding;   // 追加
+  final VoidCallback? onTap;
 
   const IconTile({
     Key? key,
@@ -15,6 +16,7 @@ class IconTile extends StatelessWidget {
     this.iconSize = 48,
     this.fontSize = 16,
     this.padding = 8,
+    this.onTap,
   }) : super(key: key);
 
   @override
@@ -25,9 +27,7 @@ class IconTile extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         padding: EdgeInsets.all(padding),
       ),
-      onPressed: () {
-        // 画面遷移などはここで実装
-      },
+      onPressed: onTap, // 画面遷移などはココに実装
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
