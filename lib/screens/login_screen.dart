@@ -99,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                         child: OutlinedButton(
                           onPressed: () {
                             // TODO: 新規登録画面への遷移を実装
-                            Navigator.pushReplacementNamed(context, '/');
+                            Navigator.pushNamed(context, '/signup');
                           },
                           style: OutlinedButton.styleFrom(
                             backgroundColor: Colors.white,
