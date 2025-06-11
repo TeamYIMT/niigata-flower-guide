@@ -78,6 +78,7 @@ class HomeScreen extends StatelessWidget {
                       iconSize: 40,
                       fontSize: 14,
                       padding: 12,
+                      onTap: () => Navigator.pushNamed(context, '/profile'),
                     ),
                     IconTile(
                       icon: 'ar_camera_icon.png',
@@ -94,6 +95,7 @@ class HomeScreen extends StatelessWidget {
           ),
           // ボトムナビゲーションはそのまま
           bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.shifting,  // 選択中のアイコンのラベルのみ表示
             currentIndex: 0,  // ホーム画面なので0を指定
             selectedItemColor: const Color(0xFF3E5C40),
             unselectedItemColor: Colors.grey,
@@ -104,6 +106,9 @@ class HomeScreen extends StatelessWidget {
                   break;
                 case 1:
                   Navigator.pushNamed(context, '/map');
+                  break;
+                case 4:
+                  Navigator.pushNamed(context, '/profile');
                   break;
                 // TODO: 他の画面の遷移も実装
               }
