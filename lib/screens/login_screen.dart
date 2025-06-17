@@ -5,18 +5,17 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 360,
-        height: 640,
-        child: Scaffold(
-          backgroundColor: const Color(0xFFFCF8F2),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
+    return Scaffold(
+      backgroundColor: const Color(0xFFFCF8F2),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -71,7 +70,6 @@ class LoginScreen extends StatelessWidget {
                         width: double.infinity,
                         child: ElevatedButton(
                           onPressed: () {
-                            // TODO: ログイン処理を実装
                             Navigator.pushReplacementNamed(context, '/');
                           },
                           style: ElevatedButton.styleFrom(
@@ -98,7 +96,6 @@ class LoginScreen extends StatelessWidget {
                         width: double.infinity,
                         child: OutlinedButton(
                           onPressed: () {
-                            // TODO: 新規登録画面への遷移を実装
                             Navigator.pushNamed(context, '/signup');
                           },
                           style: OutlinedButton.styleFrom(
@@ -121,7 +118,7 @@ class LoginScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),
