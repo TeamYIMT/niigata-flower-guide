@@ -121,12 +121,13 @@ class _MapScreenState extends State<MapScreen> {
       );
 
   Widget _buildBottomNav(BuildContext context) => BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         currentIndex: 1,
         selectedItemColor: const Color(0xFF3E5C40),
         unselectedItemColor: Colors.grey,
         onTap: (i) {
           if (i == 0) Navigator.pushReplacementNamed(context, '/');
+          if (i == 3) Navigator.pushNamed(context, '/collection');
           if (i == 4) Navigator.pushNamed(context, '/profile');
         },
         items: const [
