@@ -6,18 +6,17 @@ class SignupScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 360,
-        height: 640,
-        child: Scaffold(
-          backgroundColor: const Color(0xFFFCF8F2),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 80),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 24),
+    return Scaffold(
+      backgroundColor: const Color(0xFFFCF8F2),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+                Container(
                   padding: const EdgeInsets.all(24),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -43,18 +42,18 @@ class SignupScreen extends StatelessWidget {
                           color: Color(0xFF3A5A40),
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                       _buildTextField(hint: 'ユーザー名'),
-                      const SizedBox(height: 16),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                       _buildTextField(hint: 'Email', keyboardType: TextInputType.emailAddress),
-                      const SizedBox(height: 16),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                       _buildTextField(hint: 'パスワード', obscureText: true),
-                      const SizedBox(height: 16),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                       _buildTextField(hint: 'パスワード再入力', obscureText: true),
-                      const SizedBox(height: 24),
+                      SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                       SizedBox(
                         width: double.infinity,
-                        height: 48,
+                        height: MediaQuery.of(context).size.height * 0.06,
                         child: ElevatedButton(
                           onPressed: () {
                             // TODO: バリデーション→登録API呼び出し
@@ -74,7 +73,7 @@ class SignupScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-              ),
+              ],
             ),
           ),
         ),

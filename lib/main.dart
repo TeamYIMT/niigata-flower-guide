@@ -20,7 +20,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: const Color(0xFFf4efe1),
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3E5C40)),
+        useMaterial3: true,
       ),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
       initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginScreen(),
