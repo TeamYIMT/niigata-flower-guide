@@ -85,7 +85,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           bottomNavigationBar: BottomNavigationBar(
-            type: BottomNavigationBarType.shifting,
+            type: BottomNavigationBarType.fixed,
             currentIndex: 4,
             selectedItemColor: _primaryGreen,
             unselectedItemColor: Colors.grey,
@@ -103,6 +103,9 @@ class ProfileScreen extends StatelessWidget {
                   break;
                 case 1:
                   Navigator.pushNamed(context, '/map');
+                  break;
+                case 3:
+                  Navigator.pushNamed(context, '/collection');
                   break;
                 case 4:
                   // 現在の画面なので何もしない

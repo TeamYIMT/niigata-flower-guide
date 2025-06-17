@@ -5,6 +5,7 @@ import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/profileedit_screen.dart';
+import 'screens/stamps_collection_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/map': (context) => const MapScreen(),
         '/profile': (context) => const ProfileScreen(),
         '/profileedit': (context) => const ProfileEditScreen(),
+        '/collection': (context) => const StampCollectionScreen(),
       },
     );
   }
