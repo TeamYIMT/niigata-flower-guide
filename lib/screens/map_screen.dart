@@ -25,80 +25,65 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 360,
-        height: 640,
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Column(
-            children: [
-              const SizedBox(height: 16),
-
-              // ───────── 地図領域(Expanded) ─────────
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      // 地図コンテナが残り高さいっぱいに
-                      ClipRRect(
-                        borderRadius: BorderRadius.circular(16),
-                        child: Container(
-                          width: double.infinity,
-                          color: Colors.grey[200],
-                          child: const Center(child: Text('Map Placeholder')),
-                        ),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        width: double.infinity,
+                        color: Colors.grey[200],
+                        child: const Center(child: Text('Map Placeholder')),
                       ),
-
-                      // 検索バー（オーバーラップ）
+                    ),
+                    Positioned(
+                      top: -20,
+                      left: 32,
+                      right: 32,
+                      child: _buildSearchBar(),
+                    ),
+                    for (var i = 0; i < _spots.length; i++)
                       Positioned(
-                        top: -20,
-                        left: 32,
-                        right: 32,
-                        child: _buildSearchBar(),
+                        top: 100.0 + i * 80,
+                        left: 60.0 + (i % 2) * 120,
+                        child: GestureDetector(
+                          onTap: () => setState(() => _selectedIndex = i),
+                          child: const _MapMarker(),
+                        ),
                       ),
-
-                      // マーカー
-                      for (var i = 0; i < _spots.length; i++)
-                        Positioned(
-                          top: 100.0 + i * 80,
-                          left: 60.0 + (i % 2) * 120,
-                          child: GestureDetector(
-                            onTap: () => setState(() => _selectedIndex = i),
-                            child: const _MapMarker(),
-                          ),
-                        ),
-
-                      // スポット詳細ウインドウ（カード幅を328pxに固定）
-                      if (_selectedIndex != null)
-                        Positioned(
-                          bottom: 100,
-                          left: 16,
-                          right: 16,
-                          child: _showTouristInfo
-                              ? _TouristInfoCard(
-                                  data: _spots[_selectedIndex!],
-                                  onClose: () => setState(() => _showTouristInfo = false),
-                                )
-                              : _SpotDetailCard(
-                                  data: _spots[_selectedIndex!],
-                                  onClose: () => setState(() => _selectedIndex = null),
-                                  onTouristInfo: () => setState(() => _showTouristInfo = true),
-                                ),
-                        ),
-                    ],
-                  ),
+                    if (_selectedIndex != null)
+                      Positioned(
+                        bottom: 100,
+                        left: 16,
+                        right: 16,
+                        child: _showTouristInfo
+                            ? _TouristInfoCard(
+                                data: _spots[_selectedIndex!],
+                                onClose: () => setState(() => _showTouristInfo = false),
+                              )
+                            : _SpotDetailCard(
+                                data: _spots[_selectedIndex!],
+                                onClose: () => setState(() => _selectedIndex = null),
+                                onTouristInfo: () => setState(() => _showTouristInfo = true),
+                              ),
+                      ),
+                  ],
                 ),
               ),
-            ],
-          ),
-
-          // ───────── ボトムナビ ─────────
-          bottomNavigationBar: _buildBottomNav(context),
+            ),
+          ],
         ),
       ),
+      bottomNavigationBar: _buildBottomNav(context),
     );
   }
 

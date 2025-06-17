@@ -11,127 +11,115 @@ class ProfileEditScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SizedBox(
-        width: 360,
-        height: 640,
-        child: Scaffold(
-          backgroundColor: _scaffoldBg,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            centerTitle: true,
-            title: const Text(
-              'プロフィール編集',
-              style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            iconTheme: const IconThemeData(color: Colors.black),
-          ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Avatar
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: BoxDecoration(
-                      color: _avatarBg,
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.person,
-                      size: 64,
-                      color: _primaryGreen,
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  // Name field
-                  _buildTextField(label: '名前', maxLines: 1),
-                  const SizedBox(height: 16),
-                  // Username field
-                  _buildTextField(label: 'ユーザー名', maxLines: 1),
-                  const SizedBox(height: 16),
-                  // Email field
-                  _buildTextField(label: 'メールアドレス', maxLines: 1),
-                  const SizedBox(height: 16),
-                  // Profile text
-                  _buildTextField(label: 'プロフィール文', maxLines: 5),
-                  const SizedBox(height: 24),
-                  // Save button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // TODO: implement save logic
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: _primaryGreen,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: const Text(
-                        '変更を保存',
-                        style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        ),
-                      ),
+    return Scaffold(
+      backgroundColor: _scaffoldBg,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'プロフィール編集',
+          style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: MediaQuery.of(context).size.width * 0.3,
+                decoration: BoxDecoration(
+                  color: _avatarBg,
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.person,
+                  size: MediaQuery.of(context).size.width * 0.15,
+                  color: _primaryGreen,
+                ),
+              ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              _buildTextField(label: '名前', maxLines: 1),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              _buildTextField(label: 'ユーザー名', maxLines: 1),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              _buildTextField(label: 'メールアドレス', maxLines: 1),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.02),
+              _buildTextField(label: 'プロフィール文', maxLines: 5),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.03),
+              SizedBox(
+                width: double.infinity,
+                height: MediaQuery.of(context).size.height * 0.06,
+                child: ElevatedButton(
+                  onPressed: () {
+                    // TODO: implement save logic
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: _primaryGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                ],
-              ),
-            ),
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            backgroundColor: _navBg,
-            selectedItemColor: _primaryGreen,
-            unselectedItemColor: _primaryGreen.withOpacity(0.6),
-            showUnselectedLabels: true,
-            items: const [
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'ホーム',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.map),
-                label: 'マップ',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.camera_alt),
-                label: 'ARカメラ',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.collections),
-                label: 'コレクション',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'プロフィール',
+                  child: const Text(
+                    '変更を保存',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
             ],
-            type: BottomNavigationBarType.fixed,
-            currentIndex: 4, // Profile tab
-            onTap: (index) {
-              switch (index) {
-                case 0:
-                  Navigator.pushReplacementNamed(context, '/');
-                  break;
-                case 1:
-                  Navigator.pushNamed(context, '/map');
-                  break;
-                case 4:
-                  Navigator.pop(context); // プロフィール画面に戻る
-                  break;
-              }
-            },
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: _navBg,
+        selectedItemColor: _primaryGreen,
+        unselectedItemColor: _primaryGreen.withOpacity(0.6),
+        showUnselectedLabels: true,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'ホーム',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'マップ',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.camera_alt),
+            label: 'ARカメラ',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.collections),
+            label: 'コレクション',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'プロフィール',
+          ),
+        ],
+        type: BottomNavigationBarType.fixed,
+        currentIndex: 4,
+        onTap: (index) {
+          switch (index) {
+            case 0:
+              Navigator.pushReplacementNamed(context, '/');
+              break;
+            case 1:
+              Navigator.pushNamed(context, '/map');
+              break;
+            case 4:
+              Navigator.pop(context);
+              break;
+          }
+        },
       ),
     );
   }
