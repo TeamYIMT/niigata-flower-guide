@@ -1,5 +1,10 @@
 // map_screen.dart
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'dart:html' as html;
+import 'package:js/js_util.dart' as js_util;
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -23,6 +28,15 @@ class _MapScreenState extends State<MapScreen> {
     // …他スポット…
   ];
 
+  // Google Maps APIキーを取得
+  String get googleMapsApiKey {
+    if (kIsWeb) {
+      return js_util.getProperty(html.window, 'GOOGLE_MAPS_API_KEY') as String? ?? '';
+    } else {
+      return dotenv.env['GOOGLE_MAPS_API_KEY'] ?? '';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,10 +53,19 @@ class _MapScreenState extends State<MapScreen> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(16),
-                      child: Container(
+                      child: SizedBox(
                         width: double.infinity,
-                        color: Colors.grey[200],
-                        child: const Center(child: Text('Map Placeholder')),
+                        height: double.infinity,
+                        child: GoogleMap(
+                          initialCameraPosition: const CameraPosition(
+                            target: LatLng(37.9026, 139.0232), // 新潟県の中心座標例
+                            zoom: 10,
+                          ),
+                          onMapCreated: (controller) {
+                            // 必要なら_controllerに代入
+                          },
+                          // 必要に応じてマーカーや設定を追加
+                        ),
                       ),
                     ),
                     Positioned(
