@@ -30,10 +30,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  js: ^0.6.7
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_dotenv: ^5.1.0
+  google_maps_flutter: ^2.5.3
 
 dev_dependencies:
   flutter_test:
@@ -103,4 +106,4 @@ flutter:
     - assets/images/daylily.png
     - assets/images/hydrangea.png
     - assets/images/question.png
-    - assets/images/tulip.png  
+    - assets/images/tulip.png
