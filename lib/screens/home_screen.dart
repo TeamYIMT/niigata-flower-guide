@@ -85,6 +85,7 @@ class HomeScreen extends StatelessWidget {
                       iconSize: 40,
                       fontSize: 14,
                       padding: 12,
+                      onTap: () => Navigator.pushNamed(context, '/ar'),
                     ),
                   ],
                 ),
@@ -104,6 +105,9 @@ class HomeScreen extends StatelessWidget {
               break;
             case 1:
               Navigator.pushNamed(context, '/map');
+              break;
+            case 2:
+              Navigator.pushNamed(context, '/ar');
               break;
             case 3:
               Navigator.pushNamed(context, '/collection');
