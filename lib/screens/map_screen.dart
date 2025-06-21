@@ -112,6 +112,7 @@ class _MapScreenState extends State<MapScreen> {
         unselectedItemColor: Colors.grey,
         onTap: (i) {
           if (i == 0) Navigator.pushReplacementNamed(context, '/');
+          if (i == 2) Navigator.pushNamed(context, '/ar');
           if (i == 3) Navigator.pushNamed(context, '/collection');
           if (i == 4) Navigator.pushNamed(context, '/profile');
         },

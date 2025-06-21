@@ -8,6 +8,7 @@ import 'screens/signup_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/profileedit_screen.dart';
 import 'screens/stamps_collection_screen.dart';
+import 'screens/unity_ar_screen.dart';
 
 Future<void> main() async {
   try {
@@ -47,6 +48,7 @@ class NiigataFlowerGuide extends StatelessWidget {
         '/profile': (context) => const ProfileScreen(),
         '/profileedit': (context) => const ProfileEditScreen(),
         '/collection': (context) => const StampCollectionScreen(),
+        '/ar': (context) => const UnityArScreen(),
       },
     );
   }
