@@ -115,6 +115,9 @@ class ProfileEditScreen extends StatelessWidget {
             case 1:
               Navigator.pushNamed(context, '/map');
               break;
+            case 2:
+              Navigator.pushNamed(context, '/ar');
+              break;
             case 4:
               Navigator.pop(context);
               break;
