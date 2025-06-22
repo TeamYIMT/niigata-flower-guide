@@ -157,3 +157,10 @@ assets/images/laporteshoukai.jpg
 .env
 
 **/android/gradle.properties
+
+
+# Unity-Android モジュールの中間ファイルを除外
+/android/unityLibrary/local.properties
+/android/unityLibrary/.gradle/
+/android/unityLibrary/build/
+/android/unityLibrary/obj/
