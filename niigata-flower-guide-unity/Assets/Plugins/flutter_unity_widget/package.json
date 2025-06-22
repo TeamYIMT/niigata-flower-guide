@@ -1,0 +1,19 @@
+{
+  "name": "com.juicycleff.flutter-unity-view-widget",
+  "version": "2022.2.1",
+  "displayName": "Flutter Unity View Widget",
+  "description": "Flutter Unity View Widget for Unity",
+  "unity": "2022.2",
+  "dependencies": {},
+  "keywords": [
+    "flutter",
+    "unity",
+    "widget",
+    "view"
+  ],
+  "author": {
+    "name": "juicycleff",
+    "email": "juicycleff@gmail.com",
+    "url": "https://github.com/juicycleff"
+  }
+} 
