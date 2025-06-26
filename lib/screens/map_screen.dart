@@ -5,6 +5,7 @@ import '../data/spots.dart';
 import '../widgets/map_marker.dart';
 import '../widgets/tourist_info_card.dart';
 import '../widgets/spot_detail_card.dart';
+import 'package:geolocator/geolocator.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -15,6 +16,39 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   int? _selectedIndex;
   bool _showTouristInfo = false;
+  LatLng? _currentPosition;
+  GoogleMapController? _mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    _getCurrentLocation();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // サービスが無効の場合は何もしない
+      return;
+    }
+    LocationPermission permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return;
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return;
+    }
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _currentPosition = LatLng(position.latitude, position.longitude);
+    });
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLng(_currentPosition!),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +74,20 @@ class _MapScreenState extends State<MapScreen> {
                             target: LatLng(37.9026, 139.0232),
                             zoom: 10,
                           ),
-                          onMapCreated: (controller) {},
+                          onMapCreated: (controller) {
+                            _mapController = controller;
+                          },
+                          myLocationEnabled: _currentPosition != null,
+                          myLocationButtonEnabled: true,
+                          markers: {
+                            if (_currentPosition != null)
+                              Marker(
+                                markerId: const MarkerId('currentLocation'),
+                                position: _currentPosition!,
+                                icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+                                infoWindow: const InfoWindow(title: '現在地'),
+                              ),
+                          },
                         ),
                         ),
                       ),
