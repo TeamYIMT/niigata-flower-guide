@@ -1,7 +1,6 @@
 // map_screen.dart
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import '../utils/api_key_util.dart';
 import '../data/spots.dart';
 import '../widgets/map_marker.dart';
 import '../widgets/tourist_info_card.dart';
@@ -20,21 +19,21 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Column(
-          children: [
-            const SizedBox(height: 16),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
+            children: [
+              const SizedBox(height: 16),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(16),
                       child: SizedBox(
-                        width: double.infinity,
+                          width: double.infinity,
                         height: double.infinity,
                         child: GoogleMap(
                           initialCameraPosition: const CameraPosition(
@@ -43,44 +42,44 @@ class _MapScreenState extends State<MapScreen> {
                           ),
                           onMapCreated: (controller) {},
                         ),
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: -20,
-                      left: 32,
-                      right: 32,
-                      child: _buildSearchBar(),
-                    ),
-                    for (var i = 0; i < spots.length; i++)
                       Positioned(
-                        top: 100.0 + i * 80,
-                        left: 60.0 + (i % 2) * 120,
-                        child: GestureDetector(
-                          onTap: () => setState(() => _selectedIndex = i),
+                        top: -20,
+                        left: 32,
+                        right: 32,
+                        child: _buildSearchBar(),
+                      ),
+                    for (var i = 0; i < spots.length; i++)
+                        Positioned(
+                          top: 100.0 + i * 80,
+                          left: 60.0 + (i % 2) * 120,
+                          child: GestureDetector(
+                            onTap: () => setState(() => _selectedIndex = i),
                           child: const MapMarker(),
                         ),
                       ),
-                    if (_selectedIndex != null)
-                      Positioned(
-                        bottom: 100,
-                        left: 16,
-                        right: 16,
-                        child: _showTouristInfo
+                      if (_selectedIndex != null)
+                        Positioned(
+                          bottom: 100,
+                          left: 16,
+                          right: 16,
+                          child: _showTouristInfo
                             ? TouristInfoCard(
                                 data: spots[_selectedIndex!],
-                                onClose: () => setState(() => _showTouristInfo = false),
-                              )
+                                  onClose: () => setState(() => _showTouristInfo = false),
+                                )
                             : SpotDetailCard(
                                 data: spots[_selectedIndex!],
-                                onClose: () => setState(() => _selectedIndex = null),
-                                onTouristInfo: () => setState(() => _showTouristInfo = true),
-                              ),
-                      ),
-                  ],
+                                  onClose: () => setState(() => _selectedIndex = null),
+                                  onTouristInfo: () => setState(() => _showTouristInfo = true),
+                                ),
+                        ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
         ),
       ),
       bottomNavigationBar: _buildBottomNav(context),
@@ -112,6 +111,7 @@ class _MapScreenState extends State<MapScreen> {
         unselectedItemColor: Colors.grey,
         onTap: (i) {
           if (i == 0) Navigator.pushReplacementNamed(context, '/');
+          if (i == 2) Navigator.pushNamed(context, '/ar');
           if (i == 3) Navigator.pushNamed(context, '/collection');
           if (i == 4) Navigator.pushNamed(context, '/profile');
         },
