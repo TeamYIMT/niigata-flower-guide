@@ -100,6 +100,9 @@ class ProfileScreen extends StatelessWidget {
             case 1:
               Navigator.pushNamed(context, '/map');
               break;
+            case 2:
+              Navigator.pushNamed(context, '/ar');
+              break;
             case 3:
               Navigator.pushNamed(context, '/collection');
               break;
