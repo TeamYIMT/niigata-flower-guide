@@ -6,6 +6,7 @@ import '../widgets/map_marker.dart';
 import '../widgets/tourist_info_card.dart';
 import '../widgets/spot_detail_card.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:niigata_flower_guide/models/spot.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
@@ -18,11 +19,36 @@ class _MapScreenState extends State<MapScreen> {
   bool _showTouristInfo = false;
   LatLng? _currentPosition;
   GoogleMapController? _mapController;
+  final Set<Marker> _markers = {};
 
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
+    _createMarkers();
+  }
+
+  void _createMarkers() {
+    for (int i = 0; i < spots.length; i++) {
+      final spot = spots[i];
+      _markers.add(
+        Marker(
+          markerId: MarkerId('spot_$i'),
+          position: LatLng(spot.latitude, spot.longitude),
+          icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+          infoWindow: InfoWindow(
+            title: spot.title,
+            snippet: spot.location,
+            onTap: () {
+              setState(() {
+                _selectedIndex = i;
+                _showTouristInfo = false;
+              });
+            },
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _getCurrentLocation() async {
@@ -50,6 +76,37 @@ class _MapScreenState extends State<MapScreen> {
     );
   }
 
+  void _showFlowerDetail(Spot spot) {
+    showModalBottomSheet(
+      context: context,
+      builder: (_) => Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              spot.title, 
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+            ),
+            const SizedBox(height: 8),
+            Text(spot.description),
+            const SizedBox(height: 16),
+            Text(
+              '場所: ${spot.location}',
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              '座標: ${spot.latitude.toStringAsFixed(6)}, ${spot.longitude.toStringAsFixed(6)}',
+              style: const TextStyle(color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,7 +129,7 @@ class _MapScreenState extends State<MapScreen> {
                         child: GoogleMap(
                           initialCameraPosition: const CameraPosition(
                             target: LatLng(37.9026, 139.0232),
-                            zoom: 10,
+                            zoom: 8,
                           ),
                           onMapCreated: (controller) {
                             _mapController = controller;
@@ -80,6 +137,7 @@ class _MapScreenState extends State<MapScreen> {
                           myLocationEnabled: _currentPosition != null,
                           myLocationButtonEnabled: true,
                           markers: {
+                            ..._markers,
                             if (_currentPosition != null)
                               Marker(
                                 markerId: const MarkerId('currentLocation'),
