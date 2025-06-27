@@ -101,11 +101,7 @@ app.*.map.json
 UserSettings/
 .utmp/
 
-
-# ===================================================================
-# Visual Studio / Rider / MonoDevelop generated files
-# ===================================================================
-
+# Unity project files (auto-generated)
 *.csproj
 *.csproj.user
 *.csproj.DotSettings
@@ -117,9 +113,25 @@ UserSettings/
 *.userprefs
 *.user
 *.booproj
+*.vsconfig
 
 # Rider
 .idea/
+
+# ===================================================================
+# Visual Studio / Rider / MonoDevelop generated files
+# ===================================================================
+
+*.csproj
+*.csproj.user
+*.csproj.DotSettings
+*.sln
+*.suo
+*.vsp
+*.pidb
+*.userprefs
+*.user
+*.booproj
 
 # ===================================================================
 # OS generated files
@@ -157,7 +169,8 @@ assets/images/laporteshoukai.jpg
 .env
 
 **/android/gradle.properties
-
+**/android/local.properties
+**/android/local copy.properties
 
 # Unity-Android モジュールの中間ファイルを除外
 /android/unityLibrary/local.properties
