@@ -21,3 +21,21 @@ tasks.register<Delete>("clean") {
 }
 
 // APIキーはlocal.propertiesで管理し、build.gradle.ktsから参照します。
+
+subprojects {
+    afterEvaluate {
+        if (plugins.hasPlugin("kotlin-android")) {
+            extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinJvmOptions>("kotlinOptions") {
+                jvmTarget = "17"
+            }
+        }
+        if (plugins.hasPlugin("com.android.library") || plugins.hasPlugin("com.android.application")) {
+            extensions.configure<com.android.build.gradle.BaseExtension>("android") {
+                compileOptions {
+                    sourceCompatibility = JavaVersion.VERSION_17
+                    targetCompatibility = JavaVersion.VERSION_17
+                }
+            }
+        }
+    }
+}
