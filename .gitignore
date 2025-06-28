@@ -72,6 +72,9 @@ android/app/debug
 android/app/profile
 android/app/release
 
+# Android local properties
+android/local.properties
+android/app/src/main/assets/local.properties
 
 # ───────────────────────────────────────────────────────────
 # Symbolication／Obfuscation 関連
