@@ -70,7 +70,7 @@ const List<Spot> spots = [
   Spot(
     title: '新潟県立植物園 ハスの花',
     location: '新潟市秋葉区金津186（新潟県立植物園）',
-    image: 'assets/images/lotus.png',
+    image: 'assets/images/flower_field.png',
     description: '新潟県立植物園では、夏になると水生植物園の池で美しいハスの花が咲き誇ります。広大な園内には国内外の多様な植物が展示されており、ハスの花とともに四季折々の自然を楽しめます。',
     touristTitle: '新潟県立植物園',
     touristLocation: '新潟市秋葉区金津186',
@@ -81,7 +81,7 @@ const List<Spot> spots = [
   Spot(
     title: '上堰潟公園 桜と菜の花',
     location: '新潟市西蒲区松野尾1（上堰潟公園）',
-    image: 'assets/images/uwasekigata_sakura_nanohana.png',
+    image: 'assets/images/cherryblossom.png',
     description: '上堰潟公園は角田山の麓に広がる開放感あふれる公園で、春には桜と菜の花が同時に咲き誇り、ピンクと黄色のコントラストが美しい絶景スポットです。ピクニックや散策にも最適です。',
     touristTitle: '上堰潟公園',
     touristLocation: '新潟市西蒲区松野尾1',
