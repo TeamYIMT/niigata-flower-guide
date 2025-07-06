@@ -16,7 +16,7 @@ dependencies {
 
 android {
     namespace "com.unity3d.player"
-    ndkPath "C:/Program Files/Unity/Hub/Editor/6000.1.5f1/Editor/Data/PlaybackEngines/AndroidPlayer/NDK"
+    ndkPath "C:/Users/manne/AppData/Local/Android/sdk/ndk/25.1.8937393"
     ndkVersion "27.2.12479018"
     compileSdk 36
     buildToolsVersion = "34.0.0"
@@ -42,6 +42,18 @@ android {
             cmake {
                 arguments "-DANDROID_STL=c++_shared", "-DANDROID_SUPPORT_FLEXIBLE_PAGE_SIZES=ON"
             }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+        debug {
+            minifyEnabled false
+        }
+        profile {
+            minifyEnabled false
         }
     }
 
@@ -169,4 +181,4 @@ android.externalNativeBuild {
 }
 android.buildFeatures {
     prefab true
-}
+}
