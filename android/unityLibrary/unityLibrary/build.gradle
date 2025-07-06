@@ -18,7 +18,7 @@ android {
     namespace "com.unity3d.player"
     ndkPath "C:/Users/manne/AppData/Local/Android/sdk/ndk/25.1.8937393"
     ndkVersion "27.2.12479018"
-    compileSdk 36
+    compileSdkVersion 34
     buildToolsVersion = "34.0.0"
 
     compileOptions {
@@ -29,8 +29,8 @@ android {
     defaultConfig {
         consumerProguardFiles "proguard-unity.txt"
         versionName "0.1.0"
-        minSdk 26
-        targetSdk 36
+        minSdkVersion 24
+        targetSdkVersion 34
         versionCode 1
 
         ndk {
@@ -73,6 +73,11 @@ android {
     }
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+}
 
 
 def getSdkDir() {
