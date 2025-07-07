@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/spot.dart';
 import 'spot_action_button.dart';
+import 'stamp_collection_button.dart';
 
 class SpotDetailCard extends StatelessWidget {
   final Spot data;
@@ -117,6 +118,12 @@ class SpotDetailCard extends StatelessWidget {
                       ),
                     ),
                   ),
+                ),
+                const SizedBox(height: 12),
+                // スタンプ取得ボタン
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: StampCollectionButton(spot: data),
                 ),
                 const SizedBox(height: 12),
                 Row(
