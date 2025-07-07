@@ -9,6 +9,7 @@ import 'package:geolocator_platform_interface/geolocator_platform_interface.dart
 import 'package:geolocator/geolocator.dart';
 import 'firebase_options.dart';
 import 'providers/stamp_provider.dart';
+import 'providers/auth_provider.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/login_screen.dart';
@@ -99,9 +100,15 @@ Future<void> main() async {
     // Initialize Firebase Analytics
     FirebaseAnalytics.instance;
     
-    await dotenv.load(fileName: ".env");
+    // .envファイルの読み込み（Web環境では無視）
+    try {
+      await dotenv.load(fileName: ".env");
+      print('✅ .envファイルを読み込みました');
+    } catch (e) {
+      print('📝 .envファイルが見つかりません（Web環境では正常です）');
+    }
   } catch (e) {
-    print('Error loading .env file: $e');
+    print('❌ アプリ初期化エラー: $e');
   }
   runApp(const NiigataFlowerGuide());
 }
@@ -109,37 +116,45 @@ Future<void> main() async {
 class NiigataFlowerGuide extends StatelessWidget {
   const NiigataFlowerGuide({super.key});
 
+
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => StampProvider()),
       ],
-      child: MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Niigata 花図鑑',
-      theme: ThemeData(
-        scaffoldBackgroundColor: const Color(0xFFf4efe1),
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3E5C40)),
-        useMaterial3: true,
-      ),
-      builder: (context, child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          child: child!,
-        );
-      },
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const LoginScreen(),
-        '/signup': (context) => const SignupScreen(),
-        '/': (context) => const HomeScreen(),
-        '/map': (context) => const MapScreen(),
-        '/profile': (context) => const ProfileScreen(),
-        '/profileedit': (context) => const ProfileEditScreen(),
-        '/collection': (context) => const StampCollectionScreen(),
-        '/ar': (context) => const UnityArScreen(),
-      },
+      child: Consumer<AuthProvider>(
+        builder: (context, authProvider, child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Niigata 花図鑑',
+            theme: ThemeData(
+              scaffoldBackgroundColor: const Color(0xFFf4efe1),
+              colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF3E5C40)),
+              useMaterial3: true,
+            ),
+            builder: (context, child) {
+              return MediaQuery(
+                data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+                child: child!,
+              );
+            },
+            // 認証状態に応じて初期ルートを決定
+            initialRoute: authProvider.isAuthenticated ? '/' : '/login',
+            routes: {
+              '/login': (context) => const LoginScreen(),
+              '/signup': (context) => const SignupScreen(),
+              '/': (context) => const HomeScreen(),
+              '/map': (context) => const MapScreen(),
+              '/profile': (context) => const ProfileScreen(),
+              '/profileedit': (context) => const ProfileEditScreen(),
+              '/collection': (context) => const StampCollectionScreen(),
+              '/ar': (context) => const UnityArScreen(),
+            },
+          );
+        },
       ),
     );
   }
