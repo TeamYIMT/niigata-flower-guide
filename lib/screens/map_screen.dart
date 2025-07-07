@@ -1,12 +1,16 @@
 // map_screen.dart
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:provider/provider.dart';
 import '../data/spots.dart';
 import '../widgets/map_marker.dart';
 import '../widgets/tourist_info_card.dart';
 import '../widgets/spot_detail_card.dart';
+import '../widgets/nearby_spots_widget.dart';
+import '../widgets/stamp_collection_button.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:niigata_flower_guide/models/spot.dart';
+import '../providers/stamp_provider.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({Key? key}) : super(key: key);
