@@ -216,6 +216,10 @@ class StampCollectionButton extends StatelessWidget {
       return const Icon(Icons.check_circle);
     }
 
+    if (spot.isDemo) {
+      return const Icon(Icons.science);
+    }
+
     if (!isInRange) {
       return const Icon(Icons.location_off);
     }
@@ -229,6 +233,10 @@ class StampCollectionButton extends StatelessWidget {
       return '取得済み';
     }
 
+    if (spot.isDemo) {
+      return 'デモスタンプを取得';
+    }
+
     if (!isInRange) {
       return 'スポットに近づいてください';
     }
@@ -240,6 +248,10 @@ class StampCollectionButton extends StatelessWidget {
   Color _getButtonColor(bool isCollected, bool isInRange) {
     if (isCollected) {
       return Colors.grey;
+    }
+
+    if (spot.isDemo) {
+      return Colors.orange;
     }
 
     if (!isInRange) {

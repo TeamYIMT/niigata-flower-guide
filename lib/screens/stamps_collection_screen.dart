@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/stamp_provider.dart';
 import '../models/stamp.dart';
+import '../data/spots.dart';
 
 /// スタンプコレクション画面のウィジェット
 class StampCollectionScreen extends StatelessWidget {
@@ -139,22 +140,22 @@ class StampCollectionScreen extends StatelessWidget {
                       }
 
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: GridView.builder(
-                          itemCount: stamps.length,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 12,
-                            childAspectRatio: 1,
-                          ),
-                          itemBuilder: (context, index) {
-                            final stamp = stamps[index];
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: GridView.builder(
+                      itemCount: stamps.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 1,
+                      ),
+                      itemBuilder: (context, index) {
+                        final stamp = stamps[index];
                             return GestureDetector(
                               onTap: () => _showStampDetail(context, stamp),
                               child: Container(
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
                                   border: Border.all(
                                     color: Colors.green,
                                     width: 3,
@@ -166,11 +167,11 @@ class StampCollectionScreen extends StatelessWidget {
                                       offset: const Offset(0, 2),
                                     ),
                                   ],
-                                ),
-                                child: ClipOval(
-                                  child: Image.asset(
+                          ),
+                          child: ClipOval(
+                            child: Image.asset(
                                     stamp.spotImage,
-                                    fit: BoxFit.cover,
+                              fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Container(
                                         color: Colors.green.shade100,
@@ -178,12 +179,12 @@ class StampCollectionScreen extends StatelessWidget {
                                           Icons.star,
                                           size: 40,
                                           color: Colors.green.shade600,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
                             );
                           },
                         ),
@@ -195,19 +196,23 @@ class StampCollectionScreen extends StatelessWidget {
                 // 進捗表示とボトムナビゲーション
                 Consumer<StampProvider>(
                   builder: (context, stampProvider, child) {
-                    final total = 5; // 全スポット数（data/spots.dartから取得可能）
-                    final collectedCount = stampProvider.stampCount;
+                    // 実際のスポット数（デモスポット除外）
+                    final total = spots.where((spot) => !spot.isDemo).length;
+                    final collectedCount = stampProvider.stamps
+                        .where((stamp) => !spots.any((spot) => 
+                            spot.isDemo && spot.title == stamp.spotTitle))
+                        .length;
 
                     return Column(
                       children: [
-                        // 進捗バー
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+                // 進捗バー
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
                           child: Column(
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
+                    children: [
                                   Text(
                                     '取得済み: $collectedCount / $total',
                                     style: const TextStyle(
@@ -226,43 +231,43 @@ class StampCollectionScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 8),
                               LinearProgressIndicator(
-                                value: collectedCount / total,
-                                backgroundColor: Colors.green.shade100,
-                                color: Colors.green,
-                                minHeight: 8,
-                              ),
-                            ],
-                          ),
-                        ),
+                          value: collectedCount / total,
+                          backgroundColor: Colors.green.shade100,
+                          color: Colors.green,
+                          minHeight: 8,
+                      ),
+                    ],
+                  ),
+                ),
 
-                        // ボトムナビゲーション
-                        BottomNavigationBar(
-                          type: BottomNavigationBarType.fixed,
-                          currentIndex: 3,
+                // ボトムナビゲーション
+                BottomNavigationBar(
+                  type: BottomNavigationBarType.fixed,
+                  currentIndex: 3,
                           selectedItemColor: Colors.green,
                           unselectedItemColor: Colors.grey,
-                          items: const [
-                            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
-                            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'マップ'),
-                            BottomNavigationBarItem(icon: Icon(Icons.camera_alt), label: 'ARカメラ'),
-                            BottomNavigationBarItem(icon: Icon(Icons.collections), label: 'コレクション'),
-                            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'プロフィール'),
-                          ],
-                          onTap: (index) {
-                            switch (index) {
-                              case 0:
-                                Navigator.pushNamed(context, '/');
-                                break;
-                              case 1:
-                                Navigator.pushNamed(context, '/map');
-                                break;
-                              case 2:
-                                Navigator.pushNamed(context, '/ar');
-                                break;
-                              case 4:
-                                Navigator.pushNamed(context, '/profile');
-                                break;
-                            }
+                  items: const [
+                    BottomNavigationBarItem(icon: Icon(Icons.home), label: 'ホーム'),
+                    BottomNavigationBarItem(icon: Icon(Icons.map), label: 'マップ'),
+                    BottomNavigationBarItem(icon: Icon(Icons.camera_alt), label: 'ARカメラ'),
+                    BottomNavigationBarItem(icon: Icon(Icons.collections), label: 'コレクション'),
+                    BottomNavigationBarItem(icon: Icon(Icons.person), label: 'プロフィール'),
+                  ],
+                  onTap: (index) {
+                    switch (index) {
+                      case 0:
+                        Navigator.pushNamed(context, '/');
+                        break;
+                      case 1:
+                        Navigator.pushNamed(context, '/map');
+                        break;
+                      case 2:
+                        Navigator.pushNamed(context, '/ar');
+                        break;
+                      case 4:
+                        Navigator.pushNamed(context, '/profile');
+                        break;
+                    }
                           },
                         ),
                       ],
@@ -318,13 +323,29 @@ class StampCollectionScreen extends StatelessWidget {
                 const SizedBox(height: 16),
                 
                 // スポット情報
-                Text(
-                  stamp.spotTitle,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // デモスポット判定
+                    if (spots.any((spot) => spot.isDemo && spot.title == stamp.spotTitle)) ...[
+                      Icon(
+                        Icons.science,
+                        size: 20,
+                        color: Colors.orange[700],
+                      ),
+                      const SizedBox(width: 8),
+                    ],
+                    Flexible(
+                      child: Text(
+                        stamp.spotTitle,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 8),
                 Text(
