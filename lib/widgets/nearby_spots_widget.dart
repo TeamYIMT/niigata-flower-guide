@@ -122,11 +122,15 @@ class _NearbySpotsWidgetState extends State<NearbySpotsWidget> {
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: isCollected ? Colors.grey[300]! : Colors.green[300]!,
+                        color: spot.isDemo 
+                            ? Colors.orange[300]! 
+                            : (isCollected ? Colors.grey[300]! : Colors.green[300]!),
                         width: 2,
                       ),
                       borderRadius: BorderRadius.circular(12),
-                      color: isCollected ? Colors.grey[50] : Colors.green[50],
+                      color: spot.isDemo 
+                          ? Colors.orange[50] 
+                          : (isCollected ? Colors.grey[50] : Colors.green[50]),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -139,12 +143,26 @@ class _NearbySpotsWidgetState extends State<NearbySpotsWidget> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      spot.title,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    Row(
+                                      children: [
+                                        if (spot.isDemo) ...[
+                                          Icon(
+                                            Icons.science,
+                                            size: 16,
+                                            color: Colors.orange[700],
+                                          ),
+                                          const SizedBox(width: 4),
+                                        ],
+                                        Expanded(
+                                          child: Text(
+                                            spot.title,
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                     const SizedBox(height: 4),
                                     Text(
@@ -163,20 +181,26 @@ class _NearbySpotsWidgetState extends State<NearbySpotsWidget> {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: isCollected ? Colors.grey : Colors.green,
+                                  color: spot.isDemo 
+                                      ? Colors.orange 
+                                      : (isCollected ? Colors.grey : Colors.green),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     Icon(
-                                      isCollected ? Icons.check : Icons.location_on,
+                                      spot.isDemo 
+                                          ? Icons.science
+                                          : (isCollected ? Icons.check : Icons.location_on),
                                       size: 14,
                                       color: Colors.white,
                                     ),
                                     const SizedBox(width: 4),
                                     Text(
-                                      isCollected ? '取得済み' : '${distance.round()}m',
+                                      spot.isDemo 
+                                          ? 'デモ'
+                                          : (isCollected ? '取得済み' : '${distance.round()}m'),
                                       style: const TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
