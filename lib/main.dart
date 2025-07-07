@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/login_screen.dart';
@@ -13,6 +16,15 @@ import 'screens/unity_ar_screen.dart';
 Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
+    
+    // Initialize Firebase
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    
+    // Initialize Firebase Analytics
+    FirebaseAnalytics.instance;
+    
     await dotenv.load(fileName: ".env");
   } catch (e) {
     print('Error loading .env file: $e');
