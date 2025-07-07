@@ -12,35 +12,35 @@ class HomeScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 16),
-              // 画像部分を高さ 120 にダウン
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Container(
-                    color: const Color(0xFF3E5C40),
-                    child: Image.asset(
-                      'assets/images/flower_field.png',
-                      width: double.infinity,
-                      height: 120,
-                      fit: BoxFit.cover,
-                    ),
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            // 画像部分を高さ 120 にダウン
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  color: const Color(0xFF3E5C40),
+                  child: Image.asset(
+                    'assets/images/flower_field.png',
+                    width: double.infinity,
+                    height: 120,
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
-              const SizedBox(height: 12),
-              // タイトル
-              Text(
-                'Niigata 花図鑑',
-                style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: const Color(0xFF3E5C40),
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 16),
+            ),
+            const SizedBox(height: 12),
+            // タイトル
+            Text(
+              'Niigata 花図鑑',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: const Color(0xFF3E5C40),
+                    fontWeight: FontWeight.bold,
+                  ),
+            ),
+            const SizedBox(height: 16),
               // グリッド
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -99,7 +99,7 @@ class HomeScreen extends StatelessWidget {
                 child: const NearbySpotsWidget(),
               ),
               const SizedBox(height: 16),
-            ],
+          ],
           ),
         ),
       ),
