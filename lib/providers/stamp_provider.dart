@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/stamp.dart';
 import '../models/spot.dart';
 import '../services/firestore_service.dart';
 import '../services/location_service.dart';
 import '../data/spots.dart';
+
+// デモ設定クラス
+class _DemoConfig {
+  static const demoMode = bool.fromEnvironment('DEMO', defaultValue: false);
+}
 
 class StampProvider with ChangeNotifier {
   // スタンプコレクション
@@ -38,13 +44,52 @@ class StampProvider with ChangeNotifier {
 
   // Firestoreからのリアルタイム更新用
   StreamSubscription<List<Stamp>>? _stampsSubscription;
+  // Firebase認証状態の監視用
+  StreamSubscription<User?>? _authSubscription;
 
   StampProvider() {
-    _initializeStamps();
+    _initializeAuth();
+  }
+
+  // 認証状態の監視と初期化
+  void _initializeAuth() {
+    _authSubscription = FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user != null) {
+        // ユーザーが認証済みの場合、Firestoreからデータを取得
+        _initializeStamps();
+      } else {
+        // 未認証の場合、デモモードで匿名認証を試行
+        _handleAnonymousAuth();
+      }
+    });
+  }
+
+  // デモモード用の匿名認証
+  Future<void> _handleAnonymousAuth() async {
+    try {
+      if (kDebugMode || _DemoConfig.demoMode) {
+        // デバッグモードまたはデモモードでは自動的に匿名認証
+        await FirebaseAuth.instance.signInAnonymously();
+        print('🧪 StampProvider: デモ用匿名認証を実行しました');
+      } else {
+        // 通常モードでは空の状態にリセット
+        _stamps = [];
+        _collectedSpotTitles = {};
+        notifyListeners();
+      }
+    } catch (e) {
+      print('StampProvider: 匿名認証に失敗しました: $e');
+      _stamps = [];
+      _collectedSpotTitles = {};
+      notifyListeners();
+    }
   }
 
   // 初期化
   void _initializeStamps() {
+    // 既存のサブスクリプションをキャンセル
+    _stampsSubscription?.cancel();
+    
     _stampsSubscription = FirestoreService.getUserStampsStream().listen(
       (stamps) {
         _stamps = stamps;
@@ -218,6 +263,7 @@ class StampProvider with ChangeNotifier {
   @override
   void dispose() {
     _stampsSubscription?.cancel();
+    _authSubscription?.cancel();
     super.dispose();
   }
 } 
