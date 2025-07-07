@@ -1,5 +1,12 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:geolocator/geolocator.dart';
 import '../models/spot.dart';
+
+// デモ設定クラス
+class _DemoConfig {
+  // dart-define で上書き可: flutter run -d chrome --dart-define=DEMO=true
+  static const demoMode = bool.fromEnvironment('DEMO', defaultValue: false);
+}
 
 class LocationService {
   static const double _stampCollectionRadius = 100.0; // メートル
@@ -65,6 +72,11 @@ class LocationService {
 
   // ユーザーがスポットの近くにいるかチェック
   static Future<bool> isNearSpot(Spot spot) async {
+    // デモスポット または デバッグモードでは常にtrue
+    if (spot.isDemo || (kDebugMode && _DemoConfig.demoMode)) {
+      return true;
+    }
+
     Position? currentPosition = await getCurrentPosition();
     if (currentPosition == null) {
       return false;
@@ -119,13 +131,24 @@ class LocationService {
   static Future<List<Map<String, dynamic>>> getSpotsWithinRange(
       List<Spot> spots) async {
     Position? currentPosition = await getCurrentPosition();
-    if (currentPosition == null) {
-      return [];
-    }
-
+    
     List<Map<String, dynamic>> nearbySpots = [];
 
     for (Spot spot in spots) {
+      // デモスポット または デバッグモードの場合
+      if (spot.isDemo || (kDebugMode && _DemoConfig.demoMode)) {
+        nearbySpots.add({
+          'spot': spot,
+          'distance': 0.0, // デモスポットは距離0として扱う
+        });
+        continue;
+      }
+
+      // 通常の距離判定
+      if (currentPosition == null) {
+        continue;
+      }
+
       double distance = calculateDistance(
         currentPosition.latitude,
         currentPosition.longitude,
@@ -141,7 +164,7 @@ class LocationService {
       }
     }
 
-    // 距離でソート
+    // 距離でソート（デモスポットが最初に来る）
     nearbySpots.sort((a, b) => (a['distance'] as double).compareTo(b['distance'] as double));
 
     return nearbySpots;

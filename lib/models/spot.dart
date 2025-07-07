@@ -8,6 +8,7 @@ class Spot {
   final String touristDescription;
   final double latitude;
   final double longitude;
+  final bool isDemo; // デモスポットかどうかを識別
 
   const Spot({
     required this.title,
@@ -19,6 +20,7 @@ class Spot {
     required this.touristDescription,
     required this.latitude,
     required this.longitude,
+    this.isDemo = false, // デフォルトはfalse
   });
 
   factory Spot.fromMap(Map<String, dynamic> map) {
@@ -32,6 +34,7 @@ class Spot {
       touristDescription: map['tourist_description'] ?? '',
       latitude: map['latitude'] ?? 0.0,
       longitude: map['longitude'] ?? 0.0,
+      isDemo: map['isDemo'] ?? false,
     );
   }
 } 

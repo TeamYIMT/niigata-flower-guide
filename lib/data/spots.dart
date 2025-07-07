@@ -1,6 +1,33 @@
 import '../models/spot.dart';
 
 const List<Spot> spots = [
+  // === デモスポット（距離判定なしでテスト可能） ===
+  Spot(
+    title: '【デモ】サンプル花畑',
+    location: 'デモ用スポット（どこからでも取得可能）',
+    image: 'assets/images/flower_field.png',
+    description: 'これはデモ用のスポットです。位置情報に関係なく、どこからでもスタンプを取得できます。実際のアプリでは、スポットの近くに行く必要があります。',
+    touristTitle: 'デモ観光情報',
+    touristLocation: 'デモ用観光スポット',
+    touristDescription: 'デモ用の観光情報です。実際のアプリでは、ここに本物の観光情報が表示されます。',
+    latitude: 37.9026, // 新潟県の中心部
+    longitude: 139.0232,
+    isDemo: true, // デモスポットフラグ
+  ),
+  Spot(
+    title: '【デモ】テスト桜スポット',
+    location: 'デモ用桜スポット（距離判定なし）',
+    image: 'assets/images/cherryblossom.png',
+    description: 'デモ用の桜スポットです。スタンプ取得のテストに使用できます。実際の運用では位置情報による制限があります。',
+    touristTitle: 'デモ桜観光地',
+    touristLocation: 'デモ用桜の名所',
+    touristDescription: 'デモ用の桜観光情報です。',
+    latitude: 37.8500,
+    longitude: 139.1000,
+    isDemo: true, // デモスポットフラグ
+  ),
+  
+  // === 実際のスポット ===
   Spot(
     title: '五泉市チューリップまつり',
     location: '五泉市栗本地区一本杉内',
