@@ -96,68 +96,42 @@ class StampCollectionScreen extends StatelessWidget {
                         );
                       }
 
+                      // デモスポットを除いた実際のスポット一覧を取得
+                      final actualSpots = spots.where((spot) => !spot.isDemo).toList();
                       final stamps = stampProvider.stamps;
-                      
-                      if (stamps.isEmpty) {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.star_border,
-                                size: 64,
-                                color: Colors.grey[400],
-                              ),
-                              const SizedBox(height: 16),
-                              Text(
-                                'まだスタンプを取得していません',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.grey[600],
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Text(
-                                'スポットを訪れてスタンプを集めましょう！',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Colors.grey[500],
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              ElevatedButton.icon(
-                                onPressed: () => Navigator.pushNamed(context, '/map'),
-                                icon: const Icon(Icons.map),
-                                label: const Text('マップを見る'),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green,
-                                  foregroundColor: Colors.white,
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
 
                       return Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                    child: GridView.builder(
-                      itemCount: stamps.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 1,
-                      ),
-                      itemBuilder: (context, index) {
-                        final stamp = stamps[index];
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        child: GridView.builder(
+                          itemCount: actualSpots.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 1,
+                          ),
+                          itemBuilder: (context, index) {
+                            final spot = actualSpots[index];
+                            // このスポットのスタンプが取得済みかチェック
+                            Stamp? collectedStamp;
+                            try {
+                              collectedStamp = stamps.firstWhere(
+                                (stamp) => stamp.spotTitle == spot.title,
+                              );
+                            } catch (e) {
+                              collectedStamp = null;
+                            }
+                            final isCollected = collectedStamp != null;
+
                             return GestureDetector(
-                              onTap: () => _showStampDetail(context, stamp),
+                              onTap: () => isCollected 
+                                ? _showStampDetail(context, collectedStamp!)
+                                : _showUncollectedSpotDetail(context, spot),
                               child: Container(
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
                                   border: Border.all(
-                                    color: Colors.green,
+                                    color: isCollected ? Colors.green : Colors.grey,
                                     width: 3,
                                   ),
                                   boxShadow: [
@@ -167,24 +141,39 @@ class StampCollectionScreen extends StatelessWidget {
                                       offset: const Offset(0, 2),
                                     ),
                                   ],
-                          ),
-                          child: ClipOval(
-                            child: Image.asset(
-                                    stamp.spotImage,
-                              fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        color: Colors.green.shade100,
-                                        child: Icon(
-                                          Icons.star,
-                                          size: 40,
-                                          color: Colors.green.shade600,
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ),
+                                ),
+                                child: ClipOval(
+                                  child: isCollected
+                                    ? Image.asset(
+                                        spot.image,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            color: Colors.green.shade100,
+                                            child: Icon(
+                                              Icons.star,
+                                              size: 40,
+                                              color: Colors.green.shade600,
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Container(
+                                        color: Colors.grey.shade100,
+                                        child: Image.asset(
+                                          'assets/images/question.png',
+                                          fit: BoxFit.cover,
+                                          errorBuilder: (context, error, stackTrace) {
+                                            return Icon(
+                                              Icons.help_outline,
+                                              size: 40,
+                                              color: Colors.grey.shade600,
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                ),
+                              ),
                             );
                           },
                         ),
@@ -283,6 +272,12 @@ class StampCollectionScreen extends StatelessWidget {
   }
 
   void _showStampDetail(BuildContext context, Stamp stamp) {
+    // スタンプに対応するスポット情報を取得
+    final spot = spots.firstWhere(
+      (spot) => spot.title == stamp.spotTitle,
+      orElse: () => spots.where((spot) => !spot.isDemo).first,
+    );
+    
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -305,7 +300,7 @@ class StampCollectionScreen extends StatelessWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      stamp.spotImage,
+                      spot.image,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(
@@ -399,6 +394,145 @@ class StampCollectionScreen extends StatelessWidget {
                     ),
                     child: const Text('閉じる'),
                   ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void _showUncollectedSpotDetail(BuildContext context, spot) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 未取得スタンプ画像
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: Colors.grey, width: 3),
+                  ),
+                  child: ClipOval(
+                    child: Container(
+                      color: Colors.grey.shade100,
+                      child: Image.asset(
+                        'assets/images/question.png',
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            Icons.help_outline,
+                            size: 50,
+                            color: Colors.grey.shade600,
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                // スポット情報
+                Text(
+                  spot.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  spot.location,
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 16),
+                
+                // 未取得メッセージ
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        size: 32,
+                        color: Colors.grey[600],
+                      ),
+                      const SizedBox(height: 8),
+                      const Text(
+                        'スタンプ未取得',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'このスポットを訪れて\nスタンプを取得しましょう！',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                
+                // ボタン
+                Row(
+                  children: [
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.pushNamed(context, '/map');
+                        },
+                        icon: const Icon(Icons.map),
+                        label: const Text('マップで確認'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: OutlinedButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        style: OutlinedButton.styleFrom(
+                          side: const BorderSide(color: Colors.grey),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text('閉じる'),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
