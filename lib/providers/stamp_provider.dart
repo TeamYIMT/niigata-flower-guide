@@ -30,9 +30,13 @@ class StampProvider with ChangeNotifier {
   List<Map<String, dynamic>> _nearbySpots = [];
   List<Map<String, dynamic>> get nearbySpots => _nearbySpots;
 
-  // ローディング状態
+  // ローディング状態（全体）
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  // スポット別ローディング状態
+  Map<String, bool> _spotLoadingStates = {};
+  bool isSpotLoading(String spotTitle) => _spotLoadingStates[spotTitle] ?? false;
 
   // 位置情報取得中
   bool _isLoadingLocation = false;
@@ -53,15 +57,27 @@ class StampProvider with ChangeNotifier {
 
   // 認証状態の監視と初期化
   void _initializeAuth() {
+    print('🔐 _initializeAuth開始');
     _authSubscription = FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      print('👤 認証状態変更: user=${user?.email ?? user?.uid ?? 'null'}');
+      
       if (user != null) {
+        print('✅ ユーザー認証済み - Firestoreデータ初期化');
         // ユーザーが認証済みの場合、Firestoreからデータを取得
         _initializeStamps();
       } else {
+        print('❌ ユーザー未認証 - デモモード確認');
         // 未認証の場合、デモモードで匿名認証を試行
         _handleAnonymousAuth();
       }
     });
+    
+    // 初期状態の確認
+    final currentUser = FirebaseAuth.instance.currentUser;
+    print('🔍 初期認証状態: user=${currentUser?.email ?? currentUser?.uid ?? 'null'}');
+    if (currentUser != null) {
+      _initializeStamps();
+    }
   }
 
   // デモモード用の匿名認証
@@ -87,18 +103,25 @@ class StampProvider with ChangeNotifier {
 
   // 初期化
   void _initializeStamps() {
+    print('🔄 _initializeStamps開始');
     // 既存のサブスクリプションをキャンセル
     _stampsSubscription?.cancel();
     
     _stampsSubscription = FirestoreService.getUserStampsStream().listen(
       (stamps) {
+        print('📥 スタンプデータ受信: ${stamps.length}件');
         _stamps = stamps;
         _collectedSpotTitles = stamps.map((stamp) => stamp.spotTitle).toSet();
+        print('✅ スタンプ更新完了: タイトル=${_collectedSpotTitles.toList()}');
         notifyListeners();
       },
       onError: (error) {
+        print('💥 スタンプストリームエラー: $error');
         _errorMessage = 'スタンプの取得に失敗しました: $error';
         notifyListeners();
+      },
+      onDone: () {
+        print('🏁 スタンプストリーム終了');
       },
     );
   }
@@ -138,53 +161,110 @@ class StampProvider with ChangeNotifier {
 
   // スタンプを取得
   Future<bool> collectStamp(Spot spot) async {
-    _isLoading = true;
+    print('🎯 collectStamp開始: ${spot.title} (isDemo: ${spot.isDemo})');
+    
+    // スポット個別のロード状態を設定
+    _spotLoadingStates[spot.title] = true;
     _errorMessage = null;
     notifyListeners();
 
     try {
       // 既に取得済みかチェック
       if (_collectedSpotTitles.contains(spot.title)) {
+        print('❌ 既に取得済み: ${spot.title}');
         _errorMessage = 'このスポットのスタンプは既に取得済みです';
         return false;
       }
 
-      // 位置情報を確認
-      if (_currentPosition == null) {
-        await updateCurrentPosition();
-        if (_currentPosition == null) {
-          _errorMessage = '位置情報を取得できません';
+      // デモスポットまたはデバッグモードの場合
+      if (spot.isDemo || (kDebugMode && _DemoConfig.demoMode)) {
+        print('🧪 デモスポット処理: ${spot.title}');
+        
+        // デモスポットでは位置情報を偽装
+        double demoLat = 37.9026;  // 新潟県の中心
+        double demoLng = 139.0232;
+        
+        // Firestoreに保存（タイムアウト付き）
+        print('💾 Firestore保存開始...');
+        bool success = await FirestoreService.saveStamp(
+          spot,
+          demoLat,
+          demoLng,
+        ).timeout(
+          Duration(seconds: 30),
+          onTimeout: () {
+            print('⏰ Firestore保存タイムアウト: ${spot.title}');
+            return false;
+          },
+        );
+
+        if (success) {
+          print('✅ デモスタンプ保存成功: ${spot.title}');
+          return true;
+        } else {
+          print('❌ デモスタンプ保存失敗: ${spot.title}');
+          _errorMessage = 'スタンプの保存に失敗しました';
           return false;
         }
       }
 
+      // 通常のスポット処理
+      print('📍 通常スポット処理: ${spot.title}');
+      
+      // 位置情報を確認
+      if (_currentPosition == null) {
+        print('📡 位置情報取得開始...');
+        await updateCurrentPosition();
+        if (_currentPosition == null) {
+          print('❌ 位置情報取得失敗');
+          _errorMessage = '位置情報を取得できません';
+          return false;
+        }
+        print('✅ 位置情報取得成功');
+      }
+
       // スポットの近くにいるかチェック
+      print('📏 距離判定開始...');
       bool isNear = await LocationService.isNearSpot(spot);
       if (!isNear) {
+        print('❌ 距離判定失敗: 範囲外');
         _errorMessage = 'スポットの近くにいません（${LocationService.stampCollectionRadius.toInt()}m以内に近づいてください）';
         return false;
       }
+      print('✅ 距離判定成功');
 
-      // Firestoreに保存
+      // Firestoreに保存（タイムアウト付き）
+      print('💾 Firestore保存開始...');
       bool success = await FirestoreService.saveStamp(
         spot,
         _currentPosition!.latitude,
         _currentPosition!.longitude,
+      ).timeout(
+        Duration(seconds: 30),
+        onTimeout: () {
+          print('⏰ Firestore保存タイムアウト: ${spot.title}');
+          return false;
+        },
       );
 
       if (success) {
+        print('✅ スタンプ保存成功: ${spot.title}');
         // 成功時は自動的にStreamから更新される
         await _updateNearbySpots(); // 近くのスポット情報を更新
         return true;
       } else {
+        print('❌ スタンプ保存失敗: ${spot.title}');
         _errorMessage = 'スタンプの保存に失敗しました';
         return false;
       }
     } catch (e) {
+      print('💥 collectStamp例外: $e');
       _errorMessage = 'スタンプ取得中にエラーが発生しました: $e';
       return false;
     } finally {
-      _isLoading = false;
+      print('🏁 collectStamp終了: ${spot.title}');
+      // スポット個別のロード状態を解除
+      _spotLoadingStates[spot.title] = false;
       notifyListeners();
     }
   }
@@ -248,12 +328,16 @@ class StampProvider with ChangeNotifier {
 
   // 手動でスタンプを再読み込み
   Future<void> refreshStamps() async {
+    print('🔄 refreshStamps開始');
     try {
       List<Stamp> stamps = await FirestoreService.getUserStamps();
+      print('📥 手動取得スタンプ: ${stamps.length}件');
       _stamps = stamps;
       _collectedSpotTitles = stamps.map((stamp) => stamp.spotTitle).toSet();
+      print('✅ 手動更新完了: タイトル=${_collectedSpotTitles.toList()}');
       notifyListeners();
     } catch (e) {
+      print('💥 手動更新エラー: $e');
       _errorMessage = 'スタンプの再読み込みに失敗しました: $e';
       notifyListeners();
     }
