@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../data/spots.dart';
 import '../widgets/map_marker.dart';
 import '../widgets/tourist_info_card.dart';
-import '../widgets/spot_detail_card.dart';
+import '../widgets/spot_detail_sheet.dart';
 import '../widgets/nearby_spots_widget.dart';
 import '../widgets/stamp_collection_button.dart';
 import 'package:geolocator/geolocator.dart';
@@ -19,11 +19,10 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  int? _selectedIndex;
-  bool _showTouristInfo = false;
   LatLng? _currentPosition;
   GoogleMapController? _mapController;
   final Set<Marker> _markers = {};
+  bool _isBottomSheetOpen = false;
 
   @override
   void initState() {
@@ -44,10 +43,12 @@ class _MapScreenState extends State<MapScreen> {
             title: spot.title,
             snippet: spot.location,
             onTap: () {
-              setState(() {
-                _selectedIndex = i;
-                _showTouristInfo = false;
-              });
+              showSpotDetailSheet(
+                context, 
+                spot,
+                onShow: () => setState(() => _isBottomSheetOpen = true),
+                onHide: () => setState(() => _isBottomSheetOpen = false),
+              );
             },
           ),
         ),
@@ -140,6 +141,10 @@ class _MapScreenState extends State<MapScreen> {
                           },
                           myLocationEnabled: _currentPosition != null,
                           myLocationButtonEnabled: true,
+                          zoomGesturesEnabled: !_isBottomSheetOpen,
+                          scrollGesturesEnabled: !_isBottomSheetOpen,
+                          tiltGesturesEnabled: !_isBottomSheetOpen,
+                          rotateGesturesEnabled: !_isBottomSheetOpen,
                           markers: {
                             ..._markers,
                             if (_currentPosition != null)
@@ -159,31 +164,7 @@ class _MapScreenState extends State<MapScreen> {
                         right: 32,
                         child: _buildSearchBar(),
                       ),
-                    for (var i = 0; i < spots.length; i++)
-                        Positioned(
-                          top: 100.0 + i * 80,
-                          left: 60.0 + (i % 2) * 120,
-                          child: GestureDetector(
-                            onTap: () => setState(() => _selectedIndex = i),
-                          child: const MapMarker(),
-                        ),
-                      ),
-                      if (_selectedIndex != null)
-                        Positioned(
-                          bottom: 100,
-                          left: 16,
-                          right: 16,
-                          child: _showTouristInfo
-                            ? TouristInfoCard(
-                                data: spots[_selectedIndex!],
-                                  onClose: () => setState(() => _showTouristInfo = false),
-                                )
-                            : SpotDetailCard(
-                                data: spots[_selectedIndex!],
-                                  onClose: () => setState(() => _selectedIndex = null),
-                                  onTouristInfo: () => setState(() => _showTouristInfo = true),
-                                ),
-                        ),
+
                     ],
                   ),
                 ),

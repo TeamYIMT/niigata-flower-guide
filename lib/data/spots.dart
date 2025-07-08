@@ -3,6 +3,7 @@ import '../models/spot.dart';
 const List<Spot> spots = [
   // === デモスポット（距離判定なしでテスト可能） ===
   Spot(
+    id: 'demo-001',
     title: '【デモ】サンプル花畑',
     location: 'デモ用スポット（どこからでも取得可能）',
     image: 'assets/images/flower_field.png',
@@ -13,8 +14,22 @@ const List<Spot> spots = [
     latitude: 37.9026, // 新潟県の中心部
     longitude: 139.0232,
     isDemo: true, // デモスポットフラグ
+    flowerInfo: FlowerInfo(
+      scientificName: 'Tulipa gesneriana',
+      bloomPeriod: '4-5月',
+      bestViewingTime: '4月中旬',
+      flowerLanguage: '思いやり',
+      referenceUrl: 'https://ja.wikipedia.org/wiki/チューリップ',
+    ),
+    sightseeingInfo: SightseeingInfo(
+      nearbyAttractions: 'デモ用観光地、サンプル公園、テスト博物館',
+      accessInfo: 'JR新潟駅からバスで30分、デモ停留所下車',
+      facilities: '駐車場あり、トイレあり、売店あり',
+      websiteUrl: 'https://example.com/demo',
+    ),
   ),
   Spot(
+    id: 'demo-002',
     title: '【デモ】テスト桜スポット',
     location: 'デモ用桜スポット（距離判定なし）',
     image: 'assets/images/cherryblossom.png',
@@ -25,10 +40,23 @@ const List<Spot> spots = [
     latitude: 37.8500,
     longitude: 139.1000,
     isDemo: true, // デモスポットフラグ
+    flowerInfo: FlowerInfo(
+      scientificName: 'Prunus × yedoensis',
+      bloomPeriod: '4-5月',
+      bestViewingTime: '4月上旬',
+      flowerLanguage: '精神美',
+      referenceUrl: 'https://ja.wikipedia.org/wiki/ソメイヨシノ',
+    ),
+    sightseeingInfo: SightseeingInfo(
+      nearbyAttractions: 'デモ桜公園、テスト神社、サンプル美術館',
+      accessInfo: 'JR新潟駅からバスで20分、デモ桜前停留所下車',
+      facilities: '駐車場あり、トイレあり、ベンチあり',
+    ),
   ),
   
   // === 実際のスポット ===
   Spot(
+    id: 'gosen-tulip-001',
     title: '五泉市チューリップまつり',
     location: '五泉市栗本地区一本杉内',
     image: 'assets/images/tulip_field.jpg',
@@ -38,8 +66,22 @@ const List<Spot> spots = [
     touristDescription: 'ラポルテ五泉は、約2万4,000㎡の敷地に床面積3,700㎡の建物と3つの広場をもつ五泉市の交流拠点複合施設です。  館内には、芸術や学びの場となる多目的ホールや多目的室。市が日本に誇るニットや絹産業、地元の特産物を販売する産直ショップ＆カフェテリア。特におすすめなのは、木造建築を生かして面白遊具を備えた「子どもの遊び場」や開放感あるガレリアの空間です。  約 160 台収容できる駐車場と夜間にも利用できる24時間トイレも備えて車の利用者にも便利です。  "まるっと1日楽しく過ごせる"ラポルテ五泉 みなさまのご利用を、心からお待ちしております。',
     latitude: 37.753417,
     longitude: 139.192861,
+    flowerInfo: FlowerInfo(
+      scientificName: 'Tulipa gesneriana',
+      bloomPeriod: '4-5月',
+      bestViewingTime: '4月下旬',
+      flowerLanguage: '思いやり',
+      referenceUrl: 'https://www.city.gosen.lg.jp/soshiki/7/1/1/1/1578.html',
+    ),
+    sightseeingInfo: SightseeingInfo(
+      nearbyAttractions: 'ラポルテ五泉、東公園、五泉市村松郷土資料館',
+      accessInfo: 'JR五泉駅からバスで15分、チューリップまつり会場下車',
+      facilities: '駐車場あり、トイレあり、売店あり',
+      websiteUrl: 'https://www.city.gosen.lg.jp/',
+    ),
   ),
   Spot(
+    id: 'niigata-sakura-001',
     title: '新潟市桜まつり',
     location: '新潟市中央区白山公園',
     image: 'assets/images/cherryblossom.png',
@@ -49,6 +91,18 @@ const List<Spot> spots = [
     touristDescription: '新潟市の歴史と文化を学べる博物館です。常設展では新潟の歴史を紹介し、特別展も定期的に開催されています。',
     latitude: 37.91444659509614,
     longitude:  139.0393600507152,
+    flowerInfo: FlowerInfo(
+      scientificName: 'Prunus × yedoensis',
+      bloomPeriod: '4-5月',
+      bestViewingTime: '4月上旬',
+      flowerLanguage: '精神美',
+    ),
+    sightseeingInfo: SightseeingInfo(
+      nearbyAttractions: '新潟市歴史博物館、白山神社、信濃川やすらぎ堤',
+      accessInfo: 'JR新潟駅からバスで10分、白山公園前下車',
+      facilities: '駐車場あり、トイレあり、売店あり',
+      websiteUrl: 'https://www.city.niigata.lg.jp/',
+    ),
   ),
   // Spot(
   //   title: '上越市コスモス畑',
@@ -73,6 +127,7 @@ const List<Spot> spots = [
   //   longitude: 138.88193010907332,
   // ),
   Spot(
+    id: 'fukushimagata-001',
     title: '福島潟 菜の花畑',
     location: '新潟市北区前新田乙493（福島潟）',
     image: 'assets/images/flower_field.png',
@@ -82,6 +137,18 @@ const List<Spot> spots = [
     touristDescription: 'ビュー福島潟は、潟の自然や歴史を学べる展示や展望ホール、カフェ、ミュージアムショップを備えた情報発信施設です。高さ29mの屋上からは潟と越後平野を一望できます。',
     latitude: 37.91067636357914,
     longitude: 139.2482891677142,
+    flowerInfo: FlowerInfo(
+      scientificName: 'Brassica rapa',
+      bloomPeriod: '4-5月',
+      bestViewingTime: '4月中旬',
+      flowerLanguage: '快活',
+    ),
+    sightseeingInfo: SightseeingInfo(
+      nearbyAttractions: '水の駅「ビュー福島潟」、福島潟遊歩道、五頭連峰',
+      accessInfo: 'JR新潟駅からバスで30分、福島潟前下車',
+      facilities: '駐車場あり、トイレあり、売店あり、レストランあり',
+      websiteUrl: 'https://www.city.niigata.lg.jp/kurashi/park/shoukai/area/kita_ku/p_fukushima.html',
+    ),
   ),
   // Spot(
   //   title: '三条市ユリ園',
@@ -95,6 +162,7 @@ const List<Spot> spots = [
   //   longitude: 138.9559,
   // ),
   Spot(
+    id: 'botanical-garden-001',
     title: '新潟県立植物園 ハスの花',
     location: '新潟市秋葉区金津186（新潟県立植物園）',
     image: 'assets/images/flower_field.png',
@@ -104,8 +172,21 @@ const List<Spot> spots = [
     touristDescription: '新潟県立植物園は、高さ30mの熱帯植物ドームや花と緑のステージ、水生植物園などを備えた県内最大級の植物園です。季節ごとの企画展示や体験イベントも開催され、家族連れにも人気のスポットです。',
     latitude: 37.760635957307656, 
     longitude: 139.1122557955988,
+    flowerInfo: FlowerInfo(
+      scientificName: 'Nelumbo nucifera',
+      bloomPeriod: '7-8月',
+      bestViewingTime: '7月上旬',
+      flowerLanguage: '清らかな心',
+    ),
+    sightseeingInfo: SightseeingInfo(
+      nearbyAttractions: '新潟県立植物園、秋葉公園、中野邸記念館',
+      accessInfo: 'JR新津駅からバスで10分、県立植物園前下車',
+      facilities: '駐車場あり、トイレあり、レストランあり、売店あり',
+      websiteUrl: 'https://botanical.greenery-niigata.or.jp/',
+    ),
   ),
   Spot(
+    id: 'uwasekigata-001',
     title: '上堰潟公園 桜と菜の花',
     location: '新潟市西蒲区松野尾1（上堰潟公園）',
     image: 'assets/images/cherryblossom.png',
@@ -115,6 +196,18 @@ const List<Spot> spots = [
     touristDescription: '上堰潟公園は、湖面や芝生広場、遊歩道、バーベキュー施設、遊具などが整備された自然豊かな公園です。春は桜と菜の花、秋はコスモスが楽しめます。',
     latitude: 37.79090734939392,
     longitude: 138.86637776491642,
+    flowerInfo: FlowerInfo(
+      scientificName: 'Prunus × yedoensis & Brassica rapa',
+      bloomPeriod: '4-5月',
+      bestViewingTime: '4月中旬',
+      flowerLanguage: '精神美・快活',
+    ),
+    sightseeingInfo: SightseeingInfo(
+      nearbyAttractions: '角田山、弥彦神社、燕三条駅',
+      accessInfo: 'JR巻駅からバスで15分、上堰潟公園前下車',
+      facilities: '駐車場あり、トイレあり、バーベキュー施設、遊具',
+      websiteUrl: 'https://www.city.niigata.lg.jp/nishikan/shisetsu/kanko/koen/uwasekigata.html',
+    ),
   ),
   // Spot(
   //   title: '上堰潟公園 コスモス',
