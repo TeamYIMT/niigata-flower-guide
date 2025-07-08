@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/stamp.dart';
@@ -16,20 +17,26 @@ class FirestoreService {
   // スタンプを保存
   static Future<bool> saveStamp(Spot spot, double userLatitude, double userLongitude) async {
     try {
+      print('🔐 Firestore saveStamp開始: ${spot.title}');
+      
       final userId = currentUserId;
       if (userId == null) {
-        print('ユーザーがログインしていません');
+        print('❌ ユーザーがログインしていません');
         return false;
       }
+      print('✅ ユーザーID確認: $userId');
 
       // 既に同じスポットのスタンプを取得済みかチェック
+      print('🔍 重複チェック開始...');
       bool alreadyCollected = await hasCollectedStamp(spot.title);
       if (alreadyCollected) {
-        print('このスポットのスタンプは既に取得済みです');
+        print('❌ このスポットのスタンプは既に取得済みです: ${spot.title}');
         return false;
       }
+      print('✅ 重複チェック完了: 新規スタンプ');
 
       // スタンプオブジェクトを作成
+      print('📝 スタンプオブジェクト作成中...');
       final stampDoc = _firestore.collection(_stampsCollection).doc();
       final stamp = Stamp(
         id: stampDoc.id,
@@ -41,13 +48,22 @@ class FirestoreService {
         latitude: userLatitude,
         longitude: userLongitude,
       );
+      print('✅ スタンプオブジェクト作成完了: ${stamp.id}');
 
       // Firestoreに保存
-      await stampDoc.set(stamp.toFirestore());
-      print('スタンプが保存されました: ${spot.title}');
+      print('💾 Firestore書き込み開始...');
+      await stampDoc.set(stamp.toFirestore()).timeout(
+        Duration(seconds: 20), // 20秒でタイムアウト
+        onTimeout: () {
+          print('⏰ Firestore書き込みタイムアウト');
+          throw TimeoutException('Firestore書き込みがタイムアウトしました', Duration(seconds: 20));
+        },
+      );
+      print('✅ スタンプが保存されました: ${spot.title} (ID: ${stamp.id})');
       return true;
     } catch (e) {
-      print('スタンプの保存に失敗しました: $e');
+      print('💥 スタンプの保存に失敗しました: $e');
+      print('📋 エラー詳細: ${e.toString()}');
       return false;
     }
   }
@@ -79,7 +95,10 @@ class FirestoreService {
   // ユーザーの全スタンプをリアルタイムで監視
   static Stream<List<Stamp>> getUserStampsStream() {
     final userId = currentUserId;
+    print('🔍 getUserStampsStream開始: userId=$userId');
+    
     if (userId == null) {
+      print('❌ ユーザーIDがnull - 空のストリームを返します');
       return Stream.value([]);
     }
 
@@ -88,29 +107,58 @@ class FirestoreService {
         .where('userId', isEqualTo: userId)
         .orderBy('collectedAt', descending: true)
         .snapshots()
-        .map((querySnapshot) => querySnapshot.docs
-            .map((doc) => Stamp.fromFirestore(doc, null))
-            .toList());
+        .map((querySnapshot) {
+          print('📦 Firestoreスナップショット受信: ${querySnapshot.docs.length}件');
+          final stamps = querySnapshot.docs
+              .map((doc) {
+                try {
+                  final stamp = Stamp.fromFirestore(doc, null);
+                  print('✅ スタンプ変換成功: ${stamp.spotTitle}');
+                  return stamp;
+                } catch (e) {
+                  print('💥 スタンプ変換エラー: $e, docId: ${doc.id}');
+                  return null;
+                }
+              })
+              .where((stamp) => stamp != null)
+              .cast<Stamp>()
+              .toList();
+          
+          print('🎯 最終スタンプリスト: ${stamps.length}件');
+          return stamps;
+        });
   }
 
   // 特定のスポットのスタンプを取得済みかチェック
   static Future<bool> hasCollectedStamp(String spotTitle) async {
     try {
+      print('🔍 hasCollectedStamp開始: $spotTitle');
+      
       final userId = currentUserId;
       if (userId == null) {
+        print('❌ ユーザーがログインしていません');
         return false;
       }
+      print('✅ ユーザーID確認: $userId');
 
+      print('📡 Firestoreクエリ実行中...');
+      
+      // タイムアウト付きでクエリを実行
       final querySnapshot = await _firestore
           .collection(_stampsCollection)
           .where('userId', isEqualTo: userId)
           .where('spotTitle', isEqualTo: spotTitle)
           .limit(1)
-          .get();
+          .get()
+          .timeout(Duration(seconds: 10)); // 10秒でタイムアウト
 
-      return querySnapshot.docs.isNotEmpty;
+      bool exists = querySnapshot.docs.isNotEmpty;
+      print('✅ 重複チェック完了: $spotTitle - 存在=${exists}');
+      return exists;
     } catch (e) {
-      print('スタンプ確認に失敗しました: $e');
+      print('💥 スタンプ確認に失敗しました: $e');
+      print('📋 エラー詳細: ${e.toString()}');
+      // エラー時は重複していないものとして扱う
       return false;
     }
   }

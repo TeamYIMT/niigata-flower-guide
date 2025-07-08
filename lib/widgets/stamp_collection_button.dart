@@ -69,7 +69,7 @@ class StampCollectionButton extends StatelessWidget {
               height: 50,
               child: ElevatedButton.icon(
                 onPressed: _getButtonAction(context, stampProvider, isCollected, isInRange),
-                icon: _getButtonIcon(isCollected, isInRange, stampProvider.isLoading),
+                icon: _getButtonIcon(isCollected, isInRange, stampProvider.isSpotLoading(spot.title)),
                 label: Text(
                   _getButtonText(isCollected, isInRange),
                   style: const TextStyle(
@@ -163,7 +163,8 @@ class StampCollectionButton extends StatelessWidget {
     bool isCollected,
     bool isInRange,
   ) {
-    if (isCollected || stampProvider.isLoading) {
+    // スポット個別のロード状態をチェック
+    if (isCollected || stampProvider.isSpotLoading(spot.title)) {
       return null;
     }
 
