@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/spot.dart';
 import '../providers/stamp_provider.dart';
+import '../screens/stamps_collection_screen.dart';
 
 class StampCollectionButton extends StatelessWidget {
   final Spot spot;
@@ -180,22 +181,62 @@ class StampCollectionButton extends StatelessWidget {
     }
 
     return () async {
+      print('📝 スタンプ取得ボタンが押されました: ${spot.title}');
       bool success = await stampProvider.collectStamp(spot);
+      print('🎯 collectStamp結果: $success (${spot.title})');
+      
       if (success) {
+        print('✅ スタンプ取得成功!');
         onSuccess?.call();
+        
         if (context.mounted) {
+          // ダイアログが開いている場合は先に閉じる
+          if (Navigator.canPop(context)) {
+            Navigator.pop(context);
+          }
+          
+          // より確実なアプローチ: コンテキストを保存してから遅延実行
+          final navigationContext = context;
+          
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('「${spot.title}」のスタンプを取得しました！'),
               backgroundColor: Colors.green,
+              duration: const Duration(seconds: 4),
               action: SnackBarAction(
                 label: 'コレクションを見る',
                 textColor: Colors.white,
-                onPressed: () => Navigator.pushNamed(context, '/collection'),
+                onPressed: () {
+                  print('🔄 コレクション画面への遷移を開始します');
+                  // SnackBarを先に閉じる
+                  ScaffoldMessenger.of(navigationContext).hideCurrentSnackBar();
+                  
+                  // 少し待ってから確実にナビゲーション
+                  Future.delayed(const Duration(milliseconds: 100), () {
+                    if (navigationContext.mounted) {
+                      try {
+                        // 最も確実な方法: main.dartで定義されたルートを使用
+                        Navigator.of(navigationContext, rootNavigator: true).pushNamed('/collection');
+                        print('✅ コレクション画面への遷移成功');
+                      } catch (e) {
+                        print('💥 ルート遷移でエラー: $e');
+                        // 代替: 直接画面を開く
+                        Navigator.of(navigationContext).push(
+                          MaterialPageRoute(
+                            builder: (context) => const StampCollectionScreen(),
+                          ),
+                        );
+                        print('✅ 直接遷移で成功');
+                      }
+                    }
+                  });
+                },
               ),
             ),
           );
         }
+      } else {
+        print('❌ スタンプ取得失敗: ${spot.title}');
       }
     };
   }
