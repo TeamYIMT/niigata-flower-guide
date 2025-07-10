@@ -54,6 +54,7 @@ class Spot {
   final String title;
   final String location;
   final String image;
+  final List<String> images; // 追加：複数の画像を保持
   final String description;
   final String touristTitle;
   final String touristLocation;
@@ -69,6 +70,7 @@ class Spot {
     required this.title,
     required this.location,
     required this.image,
+    this.images = const [], // デフォルトは空リスト
     required this.description,
     required this.touristTitle,
     required this.touristLocation,
@@ -80,12 +82,23 @@ class Spot {
     this.sightseeingInfo,
   });
 
+  // メインで表示する画像を取得するヘルパーメソッド
+  List<String> get displayImages {
+    if (images.isNotEmpty) {
+      return images;
+    }
+    return [image]; // 既存のimageをフォールバックとして使用
+  }
+
   factory Spot.fromMap(Map<String, dynamic> map) {
     return Spot(
       id: map['id'] ?? '',
       title: map['title'] ?? '',
       location: map['location'] ?? '',
       image: map['image'] ?? '',
+      images: map['images'] != null 
+          ? List<String>.from(map['images']) 
+          : const [],
       description: map['description'] ?? '',
       touristTitle: map['tourist_title'] ?? '',
       touristLocation: map['tourist_location'] ?? '',
