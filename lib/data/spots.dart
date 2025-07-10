@@ -31,6 +31,11 @@ const List<Spot> spots = [
       accessInfo: 'JR新潟駅からバスで30分、デモ停留所下車',
       facilities: '駐車場あり、トイレあり、売店あり',
       websiteUrl: 'https://example.com/demo',
+      images: [
+        'assets/images/backgroundflower.png',
+        'assets/images/flower_field.png',
+        'assets/images/tulip.png',
+      ],
     ),
   ),
   Spot(
@@ -61,6 +66,11 @@ const List<Spot> spots = [
       nearbyAttractions: 'デモ桜公園、テスト神社、サンプル美術館',
       accessInfo: 'JR新潟駅からバスで20分、デモ桜前停留所下車',
       facilities: '駐車場あり、トイレあり、ベンチあり',
+      images: [
+        'assets/images/cherryblossom.png',
+        'assets/images/cherryblossom2.png',
+        'assets/images/backgroundflower.png',
+      ],
     ),
   ),
   
@@ -93,6 +103,11 @@ const List<Spot> spots = [
       accessInfo: 'JR五泉駅からバスで15分、チューリップまつり会場下車',
       facilities: '駐車場あり、トイレあり、売店あり',
       websiteUrl: 'https://www.city.gosen.lg.jp/',
+      images: [
+        'assets/images/tulip.png',
+        'assets/images/tulip_field.jpg',
+        'assets/images/flower_field.png',
+      ],
     ),
   ),
   Spot(
@@ -122,6 +137,11 @@ const List<Spot> spots = [
       accessInfo: 'JR新潟駅からバスで10分、白山公園前下車',
       facilities: '駐車場あり、トイレあり、売店あり',
       websiteUrl: 'https://www.city.niigata.lg.jp/',
+      images: [
+        'assets/images/cherryblossom.png',
+        'assets/images/cherryblossom2.png',
+        'assets/images/backgroundflower.png',
+      ],
     ),
   ),
   // Spot(
@@ -173,6 +193,11 @@ const List<Spot> spots = [
       accessInfo: 'JR新潟駅からバスで30分、福島潟前下車',
       facilities: '駐車場あり、トイレあり、売店あり、レストランあり',
       websiteUrl: 'https://www.city.niigata.lg.jp/kurashi/park/shoukai/area/kita_ku/p_fukushima.html',
+      images: [
+        'assets/images/rapeblossoms.png',
+        'assets/images/cherry_rapeblossoms.png',
+        'assets/images/backgroundflower.png',
+      ],
     ),
   ),
   // Spot(
@@ -213,6 +238,11 @@ const List<Spot> spots = [
       accessInfo: 'JR新津駅からバスで10分、県立植物園前下車',
       facilities: '駐車場あり、トイレあり、レストランあり、売店あり',
       websiteUrl: 'https://botanical.greenery-niigata.or.jp/',
+      images: [
+        'assets/images/lotus.png',
+        'assets/images/flower_field.png',
+        'assets/images/backgroundflower.png',
+      ],
     ),
   ),
   Spot(
@@ -242,6 +272,11 @@ const List<Spot> spots = [
       accessInfo: 'JR巻駅からバスで15分、上堰潟公園前下車',
       facilities: '駐車場あり、トイレあり、バーベキュー施設、遊具',
       websiteUrl: 'https://www.city.niigata.lg.jp/nishikan/shisetsu/kanko/koen/uwasekigata.html',
+      images: [
+        'assets/images/cherry_rapeblossoms.png',
+        'assets/images/cherryblossom.png',
+        'assets/images/rapeblossoms.png',
+      ],
     ),
   ),
   Spot(
@@ -271,6 +306,11 @@ const List<Spot> spots = [
       accessInfo: '田上町中心部から車で約15分、山頂まで徒歩約40分のハイキングコース',
       facilities: '駐車場、あじさい茶屋、遊歩道、展望台、手すり付き階段',
       websiteUrl: 'https://www.town.tagami.niigata.jp/',
+      images: [
+        'assets/images/hydrangea.png',
+        'assets/images/flower_field.png',
+        'assets/images/backgroundflower.png',
+      ],
     ),
   ),
   // Spot(

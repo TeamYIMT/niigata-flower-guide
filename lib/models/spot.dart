@@ -31,12 +31,14 @@ class SightseeingInfo {
   final String accessInfo;
   final String facilities;
   final String? websiteUrl;
+  final List<String> images; // 追加：観光情報用の画像リスト
 
   const SightseeingInfo({
     required this.nearbyAttractions,
     required this.accessInfo,
     required this.facilities,
     this.websiteUrl,
+    this.images = const [], // デフォルトは空リスト
   });
 
   factory SightseeingInfo.fromMap(Map<String, dynamic> map) {
@@ -45,6 +47,9 @@ class SightseeingInfo {
       accessInfo: map['access_info'] ?? '',
       facilities: map['facilities'] ?? '',
       websiteUrl: map['website_url'],
+      images: map['images'] != null 
+          ? List<String>.from(map['images']) 
+          : const [],
     );
   }
 }
