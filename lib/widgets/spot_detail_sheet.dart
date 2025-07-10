@@ -108,7 +108,7 @@ class _SpotDetailSheetState extends State<SpotDetailSheet> {
               child: IndexedStack(
                 index: _selectedIndex,
                 children: [
-                  _SpotInfoView(
+                  _BasicInfoView(
                     spot: widget.spot,
                     scrollController: ScrollController(),
                   ),
@@ -131,11 +131,11 @@ class _SpotDetailSheetState extends State<SpotDetailSheet> {
 }
 
 /// Basic spot information view
-class _SpotInfoView extends StatelessWidget {
+class _BasicInfoView extends StatelessWidget {
   final Spot spot;
   final ScrollController scrollController;
 
-  const _SpotInfoView({
+  const _BasicInfoView({
     required this.spot,
     required this.scrollController,
   });
@@ -150,27 +150,8 @@ class _SpotInfoView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Spot image
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: AspectRatio(
-              aspectRatio: 16 / 9,
-              child: Image.asset(
-                spot.image,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    color: colorScheme.surfaceVariant,
-                    child: Icon(
-                      Icons.image_not_supported,
-                      size: 48,
-                      color: colorScheme.onSurfaceVariant,
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
+          // Spot image carousel
+          _ImageCarousel(spot: spot),
           
           const SizedBox(height: 16),
           
@@ -504,16 +485,16 @@ class _InfoRow extends StatelessWidget {
           size: 20,
           color: colorScheme.primary,
         ),
-        const SizedBox(width: 8),
-        Flexible(
+        const SizedBox(width: 12),
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.w500,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: colorScheme.onSurfaceVariant,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               const SizedBox(height: 4),
@@ -521,13 +502,216 @@ class _InfoRow extends StatelessWidget {
                 value,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                   fontStyle: isItalic ? FontStyle.italic : null,
+                  height: 1.4,
                 ),
-                softWrap: true,
-                overflow: TextOverflow.visible,
               ),
             ],
           ),
         ),
+      ],
+    );
+  }
+}
+
+/// Image carousel widget for displaying multiple spot images
+class _ImageCarousel extends StatefulWidget {
+  final Spot spot;
+
+  const _ImageCarousel({required this.spot});
+
+  @override
+  State<_ImageCarousel> createState() => _ImageCarouselState();
+}
+
+class _ImageCarouselState extends State<_ImageCarousel> {
+  late PageController _pageController;
+  int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController();
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final images = widget.spot.displayImages;
+
+    // デバッグ用：画像リストをログ出力
+    debugPrint('ImageCarousel - images: $images');
+    debugPrint('ImageCarousel - images.length: ${images.length}');
+
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Stack(
+              children: [
+                PageView.builder(
+                  controller: _pageController,
+                  // スワイプ感度を向上させるため、物理設定を追加
+                  physics: const BouncingScrollPhysics(),
+                  // ページ変更時のコールバック
+                  onPageChanged: (index) {
+                    debugPrint('ImageCarousel - Page changed to: $index');
+                    setState(() {
+                      _currentIndex = index;
+                    });
+                  },
+                  itemCount: images.length,
+                  itemBuilder: (context, index) {
+                    final imagePath = images[index];
+                    debugPrint('ImageCarousel - Building image at index $index: $imagePath');
+                    
+                    return GestureDetector(
+                      // タップで次の画像に切り替え（追加機能）
+                      onTap: () {
+                        if (images.length > 1) {
+                          final nextIndex = (_currentIndex + 1) % images.length;
+                          _pageController.animateToPage(
+                            nextIndex,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                      child: Image.asset(
+                        imagePath,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          debugPrint('ImageCarousel - Error loading image: $imagePath, Error: $error');
+                          return Container(
+                            color: colorScheme.surfaceVariant,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.image_not_supported,
+                                  size: 48,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  '画像が読み込めません',
+                                  style: TextStyle(
+                                    color: colorScheme.onSurfaceVariant,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Text(
+                                  imagePath,
+                                  style: TextStyle(
+                                    color: colorScheme.onSurfaceVariant,
+                                    fontSize: 10,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
+                // 左右の矢印ボタン（複数画像がある場合のみ表示）
+                if (images.length > 1) ...[
+                  // 左矢印ボタン
+                  if (_currentIndex > 0)
+                    Positioned(
+                      left: 8,
+                      top: 0,
+                      bottom: 0,
+                      child: Center(
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.chevron_left,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            onPressed: () {
+                              _pageController.previousPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            },
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ),
+                    ),
+                  // 右矢印ボタン
+                  if (_currentIndex < images.length - 1)
+                    Positioned(
+                      right: 8,
+                      top: 0,
+                      bottom: 0,
+                      child: Center(
+                        child: Container(
+                          width: 32,
+                          height: 32,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.chevron_right,
+                              color: Colors.white,
+                              size: 16,
+                            ),
+                            onPressed: () {
+                              _pageController.nextPage(
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+                            },
+                            padding: EdgeInsets.zero,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ],
+            ),
+          ),
+        ),
+        if (images.length > 1) ...[
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              images.length,
+              (index) => Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _currentIndex == index
+                      ? colorScheme.primary
+                      : colorScheme.outline.withOpacity(0.3),
+                ),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }
