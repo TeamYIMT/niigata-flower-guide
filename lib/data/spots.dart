@@ -102,7 +102,7 @@ const List<Spot> spots = [
       nearbyAttractions: 'ラポルテ五泉、東公園、五泉市村松郷土資料館',
       accessInfo: 'JR五泉駅からバスで15分、チューリップまつり会場下車',
       facilities: '駐車場あり、トイレあり、売店あり',
-      websiteUrl: 'https://www.city.gosen.lg.jp/',
+      websiteUrl: 'https://gosen-kankou.niigata.jp/information/3072/',
       images: [
         'assets/images/tulip.png',
         'assets/images/tulip_field.jpg',
@@ -136,7 +136,7 @@ const List<Spot> spots = [
       nearbyAttractions: '新潟市歴史博物館、白山神社、信濃川やすらぎ堤',
       accessInfo: 'JR新潟駅からバスで10分、白山公園前下車',
       facilities: '駐車場あり、トイレあり、売店あり',
-      websiteUrl: 'https://www.city.niigata.lg.jp/',
+      websiteUrl: 'https://www.niigatahakusanjinja.or.jp/spring/',
       images: [
         'assets/images/cherryblossom.png',
         'assets/images/cherryblossom2.png',
@@ -192,7 +192,7 @@ const List<Spot> spots = [
       nearbyAttractions: '水の駅「ビュー福島潟」、福島潟遊歩道、五頭連峰',
       accessInfo: 'JR新潟駅からバスで30分、福島潟前下車',
       facilities: '駐車場あり、トイレあり、売店あり、レストランあり',
-      websiteUrl: 'https://www.city.niigata.lg.jp/kurashi/park/shoukai/area/kita_ku/p_fukushima.html',
+      websiteUrl: 'https://view-fukushimagata.niigata.jp/',
       images: [
         'assets/images/rapeblossoms.png',
         'assets/images/cherry_rapeblossoms.png',
@@ -271,7 +271,7 @@ const List<Spot> spots = [
       nearbyAttractions: '角田山、弥彦神社、燕三条駅',
       accessInfo: 'JR巻駅からバスで15分、上堰潟公園前下車',
       facilities: '駐車場あり、トイレあり、バーベキュー施設、遊具',
-      websiteUrl: 'https://www.city.niigata.lg.jp/nishikan/shisetsu/kanko/koen/uwasekigata.html',
+      websiteUrl: 'https://www.city.niigata.lg.jp/kurashi/park/shoukai/area/nishikanku/uwaseki.html',
       images: [
         'assets/images/cherry_rapeblossoms.png',
         'assets/images/cherryblossom.png',
@@ -305,7 +305,7 @@ const List<Spot> spots = [
       nearbyAttractions: '弥彦山、角田山、佐渡島展望、越後平野パノラマビュー',
       accessInfo: '田上町中心部から車で約15分、山頂まで徒歩約40分のハイキングコース',
       facilities: '駐車場、あじさい茶屋、遊歩道、展望台、手すり付き階段',
-      websiteUrl: 'https://www.town.tagami.niigata.jp/',
+      websiteUrl: 'https://www.town.tagami.niigata.jp/kankou/docs/29443.html',
       images: [
         'assets/images/hydrangea.png',
         'assets/images/flower_field.png',
