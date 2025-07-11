@@ -295,7 +295,7 @@ class _FlowerInfoView extends StatelessWidget {
             const SizedBox(height: 16),
             _InfoRow(
               icon: Icons.calendar_today,
-              label: '花期',
+              label: '花期と花について',
               value: flowerInfo.bloomPeriod,
             ),
             const SizedBox(height: 16),
