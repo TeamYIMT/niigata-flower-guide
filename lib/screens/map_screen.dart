@@ -115,7 +115,6 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-          backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Column(
             children: [
