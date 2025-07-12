@@ -175,6 +175,9 @@ assets/images/laporteshoukai.jpg
 **/android/local.properties
 **/android/local copy.properties
 
+# iOS APIキー設定ファイル
+ios/Config/Keys.xcconfig
+
 # Unity-Android モジュールの中間ファイルを除外
 /android/unityLibrary/local.properties
 /android/unityLibrary/.gradle/
