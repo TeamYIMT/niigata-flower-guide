@@ -410,32 +410,8 @@ class _SightseeingInfoView extends StatelessWidget {
               value: sightseeingInfo.facilities,
             ),
             const SizedBox(height: 16),
-            if (sightseeingInfo.websiteUrl != null) ...[
-              Row(
-                children: [
-                  Icon(
-                    Icons.web,
-                    size: 20,
-                    color: colorScheme.primary,
-                  ),
-                  const SizedBox(width: 8),
-                  Flexible(
-                    child: Text(
-                      '公式サイト',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              ElevatedButton.icon(
-                onPressed: () => _launchUrl(sightseeingInfo.websiteUrl!),
-                icon: const Icon(Icons.open_in_new),
-                label: const Text('公式サイトを開く'),
-              ),
-            ],
+            // 関連リンクの表示
+            ..._buildRelatedLinks(context, sightseeingInfo),
           ] else ...[
             // No sightseeing info available
             Center(
@@ -922,6 +898,99 @@ class _SightseeingImageCarouselState extends State<_SightseeingImageCarousel> {
       ],
     );
   }
+}
+
+/// Build related links section
+List<Widget> _buildRelatedLinks(BuildContext context, SightseeingInfo sightseeingInfo) {
+  final colorScheme = Theme.of(context).colorScheme;
+  List<Widget> widgets = [];
+  
+  // メインのwebsiteUrlとfacilitiesから抽出したリンクを統合
+  Map<String, String> allLinks = {};
+  
+  // メインのwebsiteUrlを追加
+  if (sightseeingInfo.websiteUrl != null) {
+    allLinks['公式サイト'] = sightseeingInfo.websiteUrl!;
+  }
+  
+  // facilitiesフィールドから関連リンクを抽出
+  final facilitiesLinks = _extractLinksFromFacilities(sightseeingInfo.facilities);
+  allLinks.addAll(facilitiesLinks);
+  
+  // リンクがある場合のみ表示
+  if (allLinks.isNotEmpty) {
+    widgets.add(
+      Row(
+        children: [
+          Icon(
+            Icons.link,
+            size: 20,
+            color: colorScheme.primary,
+          ),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(
+              'リンク',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+    
+    widgets.add(const SizedBox(height: 8));
+    
+    // 各リンクをボタンとして表示
+    for (final entry in allLinks.entries) {
+      widgets.add(
+        SizedBox(
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: () => _launchUrl(entry.value),
+            icon: const Icon(Icons.open_in_new),
+            label: Text(entry.key),
+            style: ElevatedButton.styleFrom(
+              alignment: Alignment.centerLeft,
+            ),
+          ),
+        ),
+      );
+      widgets.add(const SizedBox(height: 8));
+    }
+  }
+  
+  return widgets;
+}
+
+/// Extract links from facilities text
+Map<String, String> _extractLinksFromFacilities(String facilities) {
+  Map<String, String> links = {};
+  
+  // 「関連リンク：」以降の部分を抽出
+  final linkSectionMatch = RegExp(r'関連リンク：\s*(.*)', dotAll: true).firstMatch(facilities);
+  if (linkSectionMatch != null) {
+    final linkSection = linkSectionMatch.group(1)!;
+    
+    // 各行を解析してリンクを抽出
+    final lines = linkSection.split('\n');
+    for (final line in lines) {
+      final trimmedLine = line.trim();
+      if (trimmedLine.isNotEmpty && trimmedLine.contains('：')) {
+        final parts = trimmedLine.split('：');
+        if (parts.length == 2) {
+          final name = parts[0].trim();
+          final url = parts[1].trim();
+          if (url.startsWith('http')) {
+            links[name] = url;
+          }
+        }
+      }
+    }
+  }
+  
+  return links;
 }
 
 /// Helper function to launch URLs
