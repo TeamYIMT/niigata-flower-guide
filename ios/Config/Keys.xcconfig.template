@@ -1,0 +1,11 @@
+//
+// Keys.xcconfig.template
+// Google Maps APIキー設定テンプレート
+//
+// 使用方法:
+// 1. このファイルを Keys.xcconfig にコピー
+// 2. YOUR_GOOGLE_MAPS_API_KEY_HERE を実際のAPIキーに置き換え
+//
+
+// iOS用Google Maps APIキー
+GOOGLE_MAPS_API_KEY = YOUR_GOOGLE_MAPS_API_KEY_HERE
