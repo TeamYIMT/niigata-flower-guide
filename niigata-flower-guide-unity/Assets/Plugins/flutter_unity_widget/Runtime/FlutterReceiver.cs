@@ -1,18 +1,20 @@
 using UnityEngine;
 using System;
+using TMPro;
+using FlutterUnityWidget;
 
 public class FlutterReceiver : MonoBehaviour
 {
     [SerializeField] private GameObject messageDisplay;
-    [SerializeField] private TMPro.TextMeshProUGUI messageText;
+    [SerializeField] private TextMeshProUGUI messageText;
     
     private void Start()
     {
         // Flutter Unity Widgetのイベントを購読
-        if (FlutterUnityWidget.Instance != null)
+        if (FlutterUnityWidget.FlutterUnityWidget.Instance != null)
         {
-            FlutterUnityWidget.Instance.OnFlutterMessage += OnFlutterMessage;
-            FlutterUnityWidget.Instance.OnFlutterReady += OnFlutterReady;
+            FlutterUnityWidget.FlutterUnityWidget.Instance.OnFlutterMessage += OnFlutterMessage;
+            FlutterUnityWidget.FlutterUnityWidget.Instance.OnFlutterReady += OnFlutterReady;
         }
         
         if (messageDisplay != null)
@@ -22,10 +24,10 @@ public class FlutterReceiver : MonoBehaviour
     private void OnDestroy()
     {
         // イベントの購読を解除
-        if (FlutterUnityWidget.Instance != null)
+        if (FlutterUnityWidget.FlutterUnityWidget.Instance != null)
         {
-            FlutterUnityWidget.Instance.OnFlutterMessage -= OnFlutterMessage;
-            FlutterUnityWidget.Instance.OnFlutterReady -= OnFlutterReady;
+            FlutterUnityWidget.FlutterUnityWidget.Instance.OnFlutterMessage -= OnFlutterMessage;
+            FlutterUnityWidget.FlutterUnityWidget.Instance.OnFlutterReady -= OnFlutterReady;
         }
     }
     
@@ -61,9 +63,9 @@ public class FlutterReceiver : MonoBehaviour
     // Flutterにメッセージを送信
     private void SendMessageToFlutter(string message)
     {
-        if (FlutterUnityWidget.Instance != null)
+        if (FlutterUnityWidget.FlutterUnityWidget.Instance != null)
         {
-            FlutterUnityWidget.Instance.SendMessageToFlutter(message);
+            FlutterUnityWidget.FlutterUnityWidget.Instance.SendMessageToFlutter(message);
         }
         else
         {
