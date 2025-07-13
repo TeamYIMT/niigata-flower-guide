@@ -145,7 +145,7 @@ class StampCollectionScreen extends StatelessWidget {
                                 child: ClipOval(
                                   child: isCollected
                                     ? Image.asset(
-                                        spot.image,
+                                        spot.stampImage,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stackTrace) {
                                           return Container(
@@ -300,7 +300,7 @@ class StampCollectionScreen extends StatelessWidget {
                   ),
                   child: ClipOval(
                     child: Image.asset(
-                      spot.image,
+                      spot.stampImage,
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
                         return Container(

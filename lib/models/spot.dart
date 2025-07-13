@@ -60,6 +60,7 @@ class Spot {
   final String location;
   final String image;
   final List<String> images; // 追加：複数の画像を保持
+  final String stampImage; // 追加：スタンプ専用の画像
   final String description;
   final String touristTitle;
   final String touristLocation;
@@ -76,6 +77,7 @@ class Spot {
     required this.location,
     required this.image,
     this.images = const [], // デフォルトは空リスト
+    String? stampImage, // オプショナルに変更
     required this.description,
     required this.touristTitle,
     required this.touristLocation,
@@ -85,7 +87,7 @@ class Spot {
     this.isDemo = false, // デフォルトはfalse
     this.flowerInfo,
     this.sightseeingInfo,
-  });
+  }) : stampImage = stampImage ?? image; // デフォルトとしてimageを使用
 
   // メインで表示する画像を取得するヘルパーメソッド
   List<String> get displayImages {
@@ -104,6 +106,7 @@ class Spot {
       images: map['images'] != null 
           ? List<String>.from(map['images']) 
           : const [],
+      stampImage: map['stamp_image'], // nullの場合はコンストラクタでimageを使用
       description: map['description'] ?? '',
       touristTitle: map['tourist_title'] ?? '',
       touristLocation: map['tourist_location'] ?? '',
