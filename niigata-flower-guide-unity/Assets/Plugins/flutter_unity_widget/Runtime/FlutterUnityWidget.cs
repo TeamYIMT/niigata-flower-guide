@@ -73,12 +73,26 @@ namespace FlutterUnityWidget
         }
         
         // Android用のメッセージ送信
+#if UNITY_ANDROID && !UNITY_EDITOR
         [DllImport("flutter_unity_widget")]
         private static extern void SendMessageToFlutterAndroid(string message);
+#else
+        private static void SendMessageToFlutterAndroid(string message) 
+        {
+            Debug.Log($"[Android] Would send to Flutter: {message}");
+        }
+#endif
         
         // iOS用のメッセージ送信
+#if UNITY_IOS && !UNITY_EDITOR
         [DllImport("__Internal")]
         private static extern void SendMessageToFlutterIOS(string message);
+#else
+        private static void SendMessageToFlutterIOS(string message)
+        {
+            Debug.Log($"[iOS] Would send to Flutter: {message}");
+        }
+#endif
         
         // テスト用メソッド
         public void SendTestMessage()

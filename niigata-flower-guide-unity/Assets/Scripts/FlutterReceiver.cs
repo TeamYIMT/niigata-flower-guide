@@ -1,10 +1,12 @@
 using UnityEngine;
 using System;
+using TMPro;
+using FlutterUnityWidget;
 
 public class FlutterReceiver : MonoBehaviour
 {
     [SerializeField] private GameObject messageDisplay;
-    [SerializeField] private TMPro.TextMeshProUGUI messageText;
+    [SerializeField] private TextMeshProUGUI messageText;
     
     private void Start()
     {
@@ -37,16 +39,13 @@ public class FlutterReceiver : MonoBehaviour
     {
         try
         {
-            // flutter_unity_widgetのメッセージ送信機能を使用
-            if (Application.platform == RuntimePlatform.Android || 
-                Application.platform == RuntimePlatform.IPhonePlayer)
+            // FlutterUnityWidgetを使用してメッセージを送信
+            if (FlutterUnityWidget.FlutterUnityWidget.Instance != null)
             {
-                // ネイティブプラットフォーム用
-                SendMessage("FlutterReceiver", "OnUnityMessage", message);
+                FlutterUnityWidget.FlutterUnityWidget.Instance.SendMessageToFlutter(message);
             }
             else
             {
-                // エディタ用（デバッグ用）
                 Debug.Log($"Would send to Flutter: {message}");
             }
         }
