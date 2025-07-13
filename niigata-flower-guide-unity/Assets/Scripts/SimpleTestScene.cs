@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using FlutterUnityWidget;
 
 public class SimpleTestScene : MonoBehaviour
 {
@@ -49,9 +50,9 @@ public class SimpleTestScene : MonoBehaviour
     private void OnTestButtonClick()
     {
         Debug.Log("Test button clicked");
-        if (FlutterUnityWidget.Instance != null)
+        if (FlutterUnityWidget.FlutterUnityWidget.Instance != null)
         {
-            FlutterUnityWidget.Instance.SendMessageToFlutter("Button clicked in Unity!");
+            FlutterUnityWidget.FlutterUnityWidget.Instance.SendMessageToFlutter("Button clicked in Unity!");
         }
         
         if (statusText != null)
