@@ -12,6 +12,7 @@ const List<Spot> spots = [
       'assets/images/tulip.png',
       'assets/images/backgroundflower.png',
     ],
+    stampImage: 'assets/images/cosmos.png', // スタンプ画像を追加
     description: 'これはデモ用のスポットです。位置情報に関係なく、どこからでもスタンプを取得できます。実際のアプリでは、スポットの近くに行く必要があります。',
     touristTitle: 'デモ観光情報',
     touristLocation: 'デモ用観光スポット',
@@ -48,6 +49,7 @@ const List<Spot> spots = [
       'assets/images/cherryblossom2.png',
       'assets/images/cherry_rapeblossoms.png',
     ],
+    stampImage: 'assets/images/cherryblossom2.png', // スタンプ画像を追加
     description: 'デモ用の桜スポットです。スタンプ取得のテストに使用できます。実際の運用では位置情報による制限があります。',
     touristTitle: 'デモ桜観光地',
     touristLocation: 'デモ用桜の名所',
@@ -85,6 +87,7 @@ const List<Spot> spots = [
       'assets/photos/tulip_gosen2.JPG',
       'assets/photos/tulip_gosen3.JPG',
     ],
+    stampImage: 'assets/images/tulip.png', // スタンプ画像を追加
     description: '五泉市は、新潟県内でも有数のチューリップの産地として知られています。五泉市では、チューリップの球根を出荷するだけでなく、市民や観光客にも楽しんでもらえるよう、生産者に依頼して巣本地区にチューリップの畑を集め、チューリップまつりを毎年開催しています。最近では、オランダなどから新たな品種の球根を輸入して栽培するなど、多種多様な花が咲き誇っています。',
     touristTitle: 'ラポルテ五泉',
     touristLocation: '五泉市赤海863番地',
@@ -120,6 +123,7 @@ const List<Spot> spots = [
       'assets/photos/hakusan2_niigatatourism.jpg',
       'assets/photos/hakusan3_niigatatourism.jpg',
     ],
+    stampImage: 'assets/images/cherryblossom.png', // スタンプ画像を追加
     description: '新潟市の白山公園では、毎年春に桜まつりが開催されます。約400本の桜が咲き誇り、夜にはライトアップも行われます。花見客で賑わう人気のスポットです。',
     touristTitle: '新潟市歴史博物館',
     touristLocation: '新潟市中央区柳島町2-10',
@@ -176,6 +180,7 @@ const List<Spot> spots = [
       'assets/photos/fukusimagata3_niigatatourism.jpg',
       'assets/photos/fukusimagata4_niigatatourism.jpg',
     ],
+    stampImage: 'assets/images/rapeblossoms.png', // スタンプ画像を追加
     description: '福島潟は新潟市の東方に位置し、春には菜の花が一面に咲き誇る自然豊かな潟です。220種以上の野鳥や450種以上の植物が生息し、四季折々の風景が楽しめます。菜の花の黄色いじゅうたんと潟の水面、遠くの五頭連峰の眺めは圧巻です。',
     touristTitle: '水の駅「ビュー福島潟」',
     touristLocation: '新潟市北区前新田乙493',
@@ -221,6 +226,7 @@ const List<Spot> spots = [
       'assets/photos/shokubutsuen_lotus1.JPG',
       'assets/photos/shokubutsuen_lotus2.JPG',
     ],
+    stampImage: 'assets/images/lotus.png', // スタンプ画像を追加
     description: '新潟県立植物園では、夏になると水生植物園の池で美しいハスの花が咲き誇ります。広大な園内には国内外の多様な植物が展示されており、ハスの花とともに四季折々の自然を楽しめます。',
     touristTitle: '新潟県立植物園',
     touristLocation: '新潟市秋葉区金津186',
@@ -255,6 +261,7 @@ const List<Spot> spots = [
       'assets/photos/uwasekigata2_niigatatourism.jpg',
       'assets/photos/uwasekigata4_niigatatourism.jpg',
     ],
+    stampImage: 'assets/images/cherry_rapeblossoms.png', // スタンプ画像を追加
     description: '上堰潟公園は角田山の麓に広がる開放感あふれる公園で、春には桜と菜の花が同時に咲き誇り、ピンクと黄色のコントラストが美しい絶景スポットです。ピクニックや散策にも最適です。',
     touristTitle: '上堰潟公園',
     touristLocation: '新潟市西蒲区松野尾1',
@@ -289,6 +296,7 @@ const List<Spot> spots = [
       'assets/photos/ajisai2.JPG',
       'assets/photos/ajisai3.JPG',
     ],
+    stampImage: 'assets/images/hydrangea.png', // スタンプ画像を追加
     description: '護摩堂山あじさい園は、標高274mの護摩堂山山頂付近に広がる紫陽花の名所で、初夏になると約3万株ものあじさいが35,000㎡以上にわたって咲き誇ります。ガクアジサイを中心に、セイヨウアジサイなど複数の種類が混植され、青・紫・赤・白などバラエティに富んだ色彩が楽しめます。遊歩道沿いには花のトンネルのような風景が広がり、山頂からは越後平野、弥彦山、角田山、佐渡島なども望める絶好のビュースポットです。',
     touristTitle: '護摩堂山あじさい園・あじさい茶屋',
     touristLocation: '新潟県田上町田上',
