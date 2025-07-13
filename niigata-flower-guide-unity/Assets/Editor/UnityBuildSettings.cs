@@ -3,7 +3,7 @@ using UnityEditor;
 using System.IO;
 using UnityEditor.Build.Reporting;
 
-public class UnityBuildSettings : MonoBehaviour
+public class UnityBuildSettings
 {
     [MenuItem("Flutter/Build for Android")]
     public static void BuildForAndroid()
