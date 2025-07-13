@@ -42,7 +42,7 @@ class FirestoreService {
         id: stampDoc.id,
         spotTitle: spot.title,
         spotLocation: spot.location,
-        spotImage: spot.image,
+        spotImage: spot.stampImage, // 修正：stampImageを使用
         userId: userId,
         collectedAt: DateTime.now(),
         latitude: userLatitude,
