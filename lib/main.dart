@@ -17,7 +17,7 @@ import 'screens/signup_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/profileedit_screen.dart';
 import 'screens/stamps_collection_screen.dart';
-import 'screens/unity_ar_screen.dart';
+// import 'screens/unity_ar_screen.dart';  // Unity連携を一旦保留
 
 // デモ設定クラス
 class _DemoConfig {
@@ -151,7 +151,7 @@ class NiigataFlowerGuide extends StatelessWidget {
               '/profile': (context) => const ProfileScreen(),
               '/profileedit': (context) => const ProfileEditScreen(),
               '/collection': (context) => const StampCollectionScreen(),
-              '/ar': (context) => const UnityArScreen(),
+              // '/ar': (context) => UnityARScreen(),  // Unity連携を一旦保留
             },
           );
         },

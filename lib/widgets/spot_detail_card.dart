@@ -131,7 +131,11 @@ class SpotDetailCard extends StatelessWidget {
                   children: [
                     SpotActionButton(icon: Icons.map, label: 'マップ', onPressed: onClose),
                     SpotActionButton(icon: Icons.near_me, label: 'ルート', onPressed: () {}),
-                    SpotActionButton(icon: Icons.camera_alt, label: 'AR', onPressed: () {}),
+                    SpotActionButton(icon: Icons.camera_alt, label: 'AR', onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('ARカメラ機能は開発中です')),
+                      );
+                    }),
                   ],
                 ),
               ],

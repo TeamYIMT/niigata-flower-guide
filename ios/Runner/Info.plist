@@ -50,5 +50,21 @@
 	<!-- Google Maps APIキー設定（設定ファイルから参照） -->
 	<key>GMSApiKey</key>
 	<string>$(GOOGLE_MAPS_API_KEY)</string>
+	<!-- Google Maps SDKの設定 -->
+	<key>GMSServices</key>
+	<dict>
+		<key>Analytics</key>
+		<dict>
+			<key>ANALYTICS_STORAGE</key>
+			<string>DISABLED</string>
+		</dict>
+	</dict>
+	<!-- Firebase Analytics設定 -->
+	<key>FirebaseAnalyticsCollectionEnabled</key>
+	<false/>
+	<key>FirebaseAnalyticsCollectionDeactivated</key>
+	<true/>
+	<key>FIREBASE_ANALYTICS_COLLECTION_ENABLED</key>
+	<false/>
 </dict>
 </plist>
