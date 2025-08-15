@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
 import '../data/spots.dart';
 import '../widgets/map_marker.dart';
 import '../widgets/tourist_info_card.dart';
@@ -24,19 +25,36 @@ class _MapScreenState extends State<MapScreen> {
   final Set<Marker> _markers = {};
   bool _isBottomSheetOpen = false;
 
+  // 検索機能の状態管理
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  List<Spot> _filteredSpots = spots;
+  bool _isSuggestVisible = false;
+  Timer? _debounceTimer;
+
   @override
   void initState() {
     super.initState();
     _getCurrentLocation();
-    _createMarkers();
+    _rebuildMarkers(_filteredSpots);
   }
 
-  void _createMarkers() {
-    for (int i = 0; i < spots.length; i++) {
-      final spot = spots[i];
-      _markers.add(
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _debounceTimer?.cancel();
+    super.dispose();
+  }
+
+
+
+  void _rebuildMarkers(List<Spot> sourceSpots) {
+    final newMarkers = <Marker>{};
+    for (int i = 0; i < sourceSpots.length; i++) {
+      final spot = sourceSpots[i];
+      newMarkers.add(
         Marker(
-          markerId: MarkerId('spot_$i'),
+          markerId: MarkerId('spot_${spot.id}'),
           position: LatLng(spot.latitude, spot.longitude),
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           infoWindow: InfoWindow(
@@ -54,6 +72,101 @@ class _MapScreenState extends State<MapScreen> {
         ),
       );
     }
+    setState(() {
+      _markers.clear();
+      _markers.addAll(newMarkers);
+    });
+  }
+
+  // 検索クエリの正規化
+  String _normalizeQuery(String? query) {
+    if (query == null) return '';
+    return query.toLowerCase().trim();
+  }
+
+  // スポットが検索クエリにマッチするかチェック
+  bool _matchSpot(Spot spot, String normalizedQuery) {
+    if (normalizedQuery.isEmpty) return true;
+    
+    final fields = [
+      spot.title,
+      spot.location,
+      spot.description,
+      spot.touristTitle,
+      spot.touristLocation,
+      spot.touristDescription,
+      spot.flowerInfo?.scientificName,
+      spot.flowerInfo?.bloomPeriod,
+      spot.flowerInfo?.bestViewingTime,
+      spot.flowerInfo?.flowerLanguage,
+      spot.sightseeingInfo?.nearbyAttractions,
+      spot.sightseeingInfo?.accessInfo,
+      spot.sightseeingInfo?.facilities,
+    ];
+    
+    return fields.any((field) => 
+      field != null && _normalizeQuery(field).contains(normalizedQuery)
+    );
+  }
+
+  // 検索フィルタを適用
+  void _applyFilter() {
+    final normalizedQuery = _normalizeQuery(_searchQuery);
+    final filteredSpots = normalizedQuery.isEmpty
+        ? spots
+        : spots.where((spot) => _matchSpot(spot, normalizedQuery)).toList();
+    
+    setState(() {
+      _filteredSpots = filteredSpots;
+      _isSuggestVisible = normalizedQuery.isNotEmpty;
+    });
+    
+    _rebuildMarkers(filteredSpots);
+  }
+
+  // 検索クエリ変更時のデバウンス処理
+  void _onQueryChanged(String value) {
+    _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 200), () {
+      setState(() {
+        _searchQuery = value;
+      });
+      _applyFilter();
+    });
+  }
+
+  // 検索クリア
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() {
+      _searchQuery = '';
+      _filteredSpots = spots;
+      _isSuggestVisible = false;
+    });
+    _rebuildMarkers(spots);
+  }
+
+  // サジェスト選択時の処理
+  void _onSelectSuggestion(Spot spot) {
+    _mapController?.animateCamera(
+      CameraUpdate.newLatLngZoom(
+        LatLng(spot.latitude, spot.longitude),
+        15.0,
+      ),
+    );
+    setState(() {
+      _isSuggestVisible = false;
+    });
+    
+    // 少し遅らせて詳細シートを表示
+    Future.delayed(const Duration(milliseconds: 500), () {
+      showSpotDetailSheet(
+        context, 
+        spot,
+        onShow: () => setState(() => _isBottomSheetOpen = true),
+        onHide: () => setState(() => _isBottomSheetOpen = false),
+      );
+    });
   }
 
   Future<void> _getCurrentLocation() async {
@@ -161,7 +274,12 @@ class _MapScreenState extends State<MapScreen> {
                         top: -20,
                         left: 32,
                         right: 32,
-                        child: _buildSearchBar(),
+                        child: Column(
+                          children: [
+                            _buildSearchBar(),
+                            if (_isSuggestVisible) _buildSuggestionList(),
+                          ],
+                        ),
                       ),
 
                     ],
@@ -181,17 +299,120 @@ class _MapScreenState extends State<MapScreen> {
           height: 40,
           color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 12),
-          child: const TextField(
+          child: TextField(
+            controller: _searchController,
+            onChanged: _onQueryChanged,
+            onSubmitted: (value) {
+              if (_filteredSpots.isNotEmpty) {
+                _onSelectSuggestion(_filteredSpots.first);
+              }
+            },
             decoration: InputDecoration(
-              hintText: '検索',
-              hintStyle: TextStyle(color: Colors.black54),
-              prefixIcon: Icon(Icons.search, color: Colors.black54),
+              hintText: '検索（スポット名、場所、説明など）',
+              hintStyle: const TextStyle(color: Colors.black54),
+              prefixIcon: const Icon(Icons.search, color: Colors.black54),
+              suffixIcon: _searchQuery.isNotEmpty
+                  ? IconButton(
+                      icon: const Icon(Icons.clear, color: Colors.black54),
+                      onPressed: _clearSearch,
+                    )
+                  : null,
               border: InputBorder.none,
-              contentPadding: EdgeInsets.symmetric(vertical: 8),
+              contentPadding: const EdgeInsets.symmetric(vertical: 8),
             ),
           ),
         ),
       );
+
+  Widget _buildSuggestionList() {
+    const maxSuggestions = 8;
+    final suggestions = _filteredSpots.take(maxSuggestions).toList();
+    
+    return Container(
+      margin: const EdgeInsets.only(top: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      constraints: const BoxConstraints(maxHeight: 300),
+      child: suggestions.isEmpty
+          ? const Padding(
+              padding: EdgeInsets.all(16),
+              child: Text(
+                '該当するスポットが見つかりませんでした',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            )
+          : ListView.separated(
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              itemCount: suggestions.length,
+              separatorBuilder: (context, index) => const Divider(
+                height: 1,
+                indent: 16,
+                endIndent: 16,
+              ),
+              itemBuilder: (context, index) {
+                final spot = suggestions[index];
+                return ListTile(
+                  dense: true,
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 4,
+                  ),
+                  leading: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: spot.isDemo 
+                        ? Colors.orange[100] 
+                        : Colors.green[100],
+                    child: Icon(
+                      spot.isDemo ? Icons.science : Icons.location_on,
+                      size: 16,
+                      color: spot.isDemo 
+                          ? Colors.orange[700] 
+                          : Colors.green[700],
+                    ),
+                  ),
+                  title: Text(
+                    spot.title,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  subtitle: Text(
+                    spot.location,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  trailing: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 12,
+                    color: Colors.grey[400],
+                  ),
+                  onTap: () => _onSelectSuggestion(spot),
+                );
+              },
+            ),
+    );
+  }
 
   Widget _buildBottomNav(BuildContext context) => BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -200,7 +421,9 @@ class _MapScreenState extends State<MapScreen> {
         unselectedItemColor: Colors.grey,
         onTap: (i) {
           if (i == 0) Navigator.pushReplacementNamed(context, '/');
-          if (i == 2) Navigator.pushNamed(context, '/ar');
+          if (i == 2) ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('ARカメラ機能は開発中です')),
+          );
           if (i == 3) Navigator.pushNamed(context, '/collection');
           if (i == 4) Navigator.pushNamed(context, '/profile');
         },

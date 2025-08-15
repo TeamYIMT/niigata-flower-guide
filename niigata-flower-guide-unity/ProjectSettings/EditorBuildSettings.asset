@@ -4,7 +4,13 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/ARDemo.unity
+    guid: 99702a2517e62844d86397ef2baba382
+  - enabled: 1
+    path: Assets/Scenes/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: 4ee92ad4699848b4db1b66152f7ac453, type: 2}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 7449527ae5733f34d9a489386513541d, type: 2}

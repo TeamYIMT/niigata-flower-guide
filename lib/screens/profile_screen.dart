@@ -308,7 +308,9 @@ class ProfileScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/map');
               break;
             case 2:
-              Navigator.pushNamed(context, '/ar');
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('ARカメラ機能は開発中です')),
+              );
               break;
             case 3:
               Navigator.pushNamed(context, '/collection');
