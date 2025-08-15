@@ -252,7 +252,11 @@ class _BasicInfoView extends StatelessWidget {
               SpotActionButton(
                 icon: Icons.camera_alt,
                 label: 'AR',
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('ARカメラ機能は開発中です')),
+                  );
+                },
               ),
             ],
           ),

@@ -31,6 +31,10 @@ target 'Runner' do
   use_frameworks!
 
   flutter_install_all_ios_pods File.dirname(File.realpath(__FILE__))
+  
+  # Unity Library integration - Direct Xcode project reference
+  # Note: Unity 6000.1.5f1 and later use direct project integration
+  
   target 'RunnerTests' do
     inherit! :search_paths
   end
