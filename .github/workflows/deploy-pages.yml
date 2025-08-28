@@ -31,6 +31,7 @@ jobs:
       - name: Build web
         run: |
           flutter build web --release \
+            --dart-define=DEMO=true \
             --base-href "/${{ github.event.repository.name }}/"
 
       - name: SPA 404 fallback
