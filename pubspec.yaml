@@ -102,23 +102,4 @@ flutter:
   # see https://flutter.dev/to/font-from-package
 
   assets:
-    - assets/images/flower_field.png
-    - assets/images/map_icon.png
-    - assets/images/collection_icon.png
-    - assets/images/profile_icon.png
-    - assets/images/ar_camera_icon.png
-    - assets/images/tulip_field.jpg
-    - assets/images/laporteshoukai.jpg
-    - assets/images/backgroundflower.png
-    - assets/images/cherryblossom.png
-    - assets/images/cherryblossom2.png
-    - assets/images/cosmos.png
-    - assets/images/daylily.png
-    - assets/images/hydrangea.png
-    - assets/images/question.png
-    - assets/images/tulip.png
-    - assets/images/lotus.png
-    - assets/images/rapeblossoms.png
-    - assets/images/cherry_rapeblossoms.png
-    - assets/images/tulip.png
-    - assets/photos/
+    - assets/images/
