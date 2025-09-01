@@ -84,15 +84,11 @@ namespace FlutterUnityWidget
 #endif
         
         // iOS用のメッセージ送信
-#if UNITY_IOS && !UNITY_EDITOR
-        [DllImport("__Internal")]
-        private static extern void SendMessageToFlutterIOS(string message);
-#else
+        // 初期統合段階ではネイティブ連携が未設定でもビルドできるようスタブを使用
         private static void SendMessageToFlutterIOS(string message)
         {
             Debug.Log($"[iOS] Would send to Flutter: {message}");
         }
-#endif
         
         // テスト用メソッド
         public void SendTestMessage()
