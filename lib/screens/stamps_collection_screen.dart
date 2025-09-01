@@ -3,10 +3,12 @@ import 'package:provider/provider.dart';
 import '../providers/stamp_provider.dart';
 import '../models/stamp.dart';
 import '../data/spots.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import '../services/share_service.dart';
 
 /// スタンプコレクション画面のウィジェット
 class StampCollectionScreen extends StatelessWidget {
-  const StampCollectionScreen({Key? key}) : super(key: key);
+  const StampCollectionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -251,9 +253,7 @@ class StampCollectionScreen extends StatelessWidget {
                         Navigator.pushNamed(context, '/map');
                         break;
                       case 2:
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('ARカメラ機能は開発中です')),
-                        );
+                        Navigator.pushNamed(context, '/ar');
                         break;
                       case 4:
                         Navigator.pushNamed(context, '/profile');
@@ -380,8 +380,39 @@ class StampCollectionScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20),
-                
+                const SizedBox(height: 16),
+                // 共有ボタン
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.ios_share),
+                    label: const Text('SNSで共有'),
+                    onPressed: () async {
+                      // スタンプ画像をアセットから読み込み
+                      final bytes = await rootBundle.load(spot.stampImage);
+
+                      // キャプション生成
+                      final caption = [
+                        '【スタンプ取得】${stamp.spotTitle}',
+                        '#Niigata花図鑑 #デジタルスタンプ',
+                      ].join('\n');
+
+                      await ShareService.shareImageBytes(
+                        imageBytes: bytes.buffer.asUint8List(),
+                        filename: 'stamp_${DateTime.now().millisecondsSinceEpoch}.png',
+                        text: caption,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 // 閉じるボタン
                 SizedBox(
                   width: double.infinity,
