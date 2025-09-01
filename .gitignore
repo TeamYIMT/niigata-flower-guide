@@ -87,6 +87,12 @@ app.*.map.json
 # ───────────────────────────────────────────────────────────
 .metadata
 
+# 環境変数ファイル（APIキー等の機密情報）
+.env
+.env.local
+.env.development
+.env.production
+
 # 企画書など（ドキュメントフォルダがリポジトリ内にある場合）
 /memo/
 
