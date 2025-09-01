@@ -2,6 +2,8 @@
 
 新潟県の花々をAR技術で楽しめるスマートフォンアプリケーション
 
+🌐 **GitHub Pages で公開中**: [https://teamyimt.github.io/niigata-flower-guide/](https://teamyimt.github.io/niigata-flower-guide/)
+
 ## 📱 概要
 
 新潟県の季節ごとの花々を地域別に楽しめるスマホアプリです。AR技術を活用し、実際のスポットを訪れると、カメラ越しにチューリップやアジサイなどの花がデジタルに咲き誇ります。新潟の美しい自然と四季折々の花を臨場感たっぷりに紹介します。
