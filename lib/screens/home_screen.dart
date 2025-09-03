@@ -85,9 +85,7 @@ class HomeScreen extends StatelessWidget {
                       iconSize: 40,
                       fontSize: 14,
                       padding: 12,
-                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('ARカメラ機能は開発中です')),
-                      ),
+                      onTap: () => Navigator.pushNamed(context, '/ar'),
                     ),
                   ],
                 ),
@@ -117,9 +115,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/map');
               break;
             case 2:
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('ARカメラ機能は開発中です')),
-              );
+              Navigator.pushNamed(context, '/ar');
               break;
             case 3:
               Navigator.pushNamed(context, '/collection');
