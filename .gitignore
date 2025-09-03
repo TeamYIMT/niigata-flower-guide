@@ -190,3 +190,5 @@ ios/Config/Keys.xcconfig
 /android/unityLibrary/.gradle/
 /android/unityLibrary/build/
 /android/unityLibrary/obj/
+
+ios/UnityLibrary/
