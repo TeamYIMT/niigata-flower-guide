@@ -45,8 +45,6 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>AR 機能のためにカメラを使用します。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>現在地を地図に表示するために位置情報を利用します。</string>
 	<!-- Google Maps APIキー設定（設定ファイルから参照） -->

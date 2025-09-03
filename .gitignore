@@ -124,16 +124,6 @@ UserSettings/
 *.booproj
 *.vsconfig
 
-# Unity as a Library（iOS/Android の生成物）
-ios/UnityLibrary/
-android/unityLibrary/
-android/app/src/main/assets/unityLibrary/
-
-# Android unityLibrary のビルド中間物（保険）
-android/unityLibrary/.gradle/
-android/unityLibrary/build/
-android/unityLibrary/obj/
-
 # Rider
 .idea/
 
