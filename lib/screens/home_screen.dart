@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'map_screen.dart';
 import 'stamps_collection_screen.dart'; // クラス名は StampCollectionScreen（単数形）
 import 'profile_screen.dart';
+import '../widgets/nearby_spots_widget.dart';
+
+const _primaryGreen = Color(0xFF4CAF50);
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,7 +18,6 @@ class _HomeScreenState extends State<HomeScreen> {
   // 0:ホーム, 1:マップ, 2:AR(押したら遷移), 3:コレクション, 4:プロフィール
   int _index = 0;
 
-  static const _primaryGreen = Color(0xFF4CAF50);
   static const _bgLight = Color(0xFFFCF8F2);
 
   @override
@@ -103,23 +105,35 @@ class _HomeTab extends StatelessWidget {
               icon: Icons.map,
               label: 'マップ',
               onTap: () => goTab(1),
+              color: const Color(0xFF56C0B3),
             ),
             _HomeBigButton(
               icon: Icons.camera_alt,
-              label: 'AR（アジサイ）',
+              label: 'ARカメラ',
               onTap: () => goTab(2),
+              color: const Color(0xFF8DD7B2),
             ),
             _HomeBigButton(
               icon: Icons.collections,
               label: 'コレクション',
               onTap: () => goTab(3),
+              color: const Color(0xFFF4C84E),
             ),
             _HomeBigButton(
               icon: Icons.person,
               label: 'プロフィール',
               onTap: () => goTab(4),
+              color: const Color(0xFFF9A1B0),
             ),
           ],
+        ),
+
+        const SizedBox(height: 24),
+
+        // 近くのスポット情報
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: const NearbySpotsWidget(),
         ),
       ],
     );
@@ -130,17 +144,19 @@ class _HomeBigButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final Color color;
   const _HomeBigButton({
     super.key,
     required this.icon,
     required this.label,
     required this.onTap,
+    required this.color,
   });
 
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white,
+      color: color,
       borderRadius: BorderRadius.circular(16),
       elevation: 1.5,
       child: InkWell(
@@ -151,9 +167,9 @@ class _HomeBigButton extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon, size: 36, color: const Color(0xFF4CAF50)),
+              Icon(icon, size: 36, color: Colors.white),
               const SizedBox(height: 10),
-              Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+              Text(label, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white)),
             ],
           ),
         ),
