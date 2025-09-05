@@ -82,14 +82,38 @@ class _HomeTab extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
       children: [
-        const Text(
+        const SizedBox(height: 16),
+
+        // トップ画像（高さ120）
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Container(
+              color: const Color(0xFF3E5C40),
+              child: Image.asset(
+                'assets/images/flower_field.png',
+                width: double.infinity,
+                height: 120,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 12),
+
+        // タイトル
+        Text(
           'Niigata 花図鑑',
-          style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: const Color(0xFF3E5C40),
+                fontWeight: FontWeight.bold,
+              ) ?? const TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF3E5C40)),
         ),
         const SizedBox(height: 8),
         Text(
           '花をきっかけに、新潟の魅力を見つけよう。',
-          style: TextStyle(color: Colors.black54),
+          style: TextStyle(color: Color(0xFF476D5B)),
         ),
         const SizedBox(height: 24),
 
