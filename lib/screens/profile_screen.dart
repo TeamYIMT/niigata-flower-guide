@@ -1,18 +1,25 @@
-// lib/screens/profile_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:niigata_flower_guide/pages/unity_webview_page.dart';
+
 import '../providers/auth_provider.dart';
+import 'home_screen.dart';
+import 'profileedit_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final bool embedded;
+  const ProfileScreen({super.key, this.embedded = false});
 
   static const _primaryGreen = Color(0xFF4CAF50);
   static const _bgLight = Color(0xFFFCF8F2);
   static const _borderRed = Color(0xFFE57373);
   static const _avatarBg = Color(0xFFE8F5E9);
 
-  // ログアウト確認ダイアログ
-  Future<void> _showLogoutDialog(BuildContext context, AuthProvider authProvider) async {
+  // ログアウト確認
+  Future<void> _showLogoutDialog(
+    BuildContext context,
+    AuthProvider authProvider,
+  ) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false,
@@ -23,9 +30,7 @@ class ProfileScreen extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: const Text('キャンセル'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
               child: const Text('ログアウト'),
@@ -33,7 +38,9 @@ class ProfileScreen extends StatelessWidget {
                 Navigator.of(context).pop();
                 final success = await authProvider.signOut();
                 if (success && context.mounted) {
-                  Navigator.of(context).pushReplacementNamed('/login');
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (_) => HomeScreen()),
+                  );
                 }
               },
             ),
@@ -43,8 +50,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  // 匿名アカウント変換ダイアログ
-  Future<void> _showLinkAccountDialog(BuildContext context, AuthProvider authProvider) async {
+  // ゲスト → メール/パスワード変換
+  Future<void> _showLinkAccountDialog(
+    BuildContext context,
+    AuthProvider authProvider,
+  ) async {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     final formKey = GlobalKey<FormState>();
@@ -73,9 +83,9 @@ class ProfileScreen extends StatelessWidget {
                     if (value == null || value.trim().isEmpty) {
                       return 'メールアドレスを入力してください';
                     }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
-                      return 'メールアドレスの形式が正しくありません';
-                    }
+                    final ok = RegExp(r'^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,4}$')
+                        .hasMatch(value);
+                    if (!ok) return 'メールアドレスの形式が正しくありません';
                     return null;
                   },
                 ),
@@ -103,9 +113,7 @@ class ProfileScreen extends StatelessWidget {
           actions: <Widget>[
             TextButton(
               child: const Text('キャンセル'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
             ),
             TextButton(
               child: const Text('変換'),
@@ -118,8 +126,8 @@ class ProfileScreen extends StatelessWidget {
                   );
                   if (success && context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('アカウントの変換が完了しました'),
+                      SnackBar(
+                        content: const Text('アカウントの変換が完了しました'),
                         backgroundColor: Colors.green,
                       ),
                     );
@@ -137,16 +145,16 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final cardWidth = screenWidth * 0.9; // 画面幅の90%
-    final cardPadding = screenWidth * 0.06; // 画面幅の6%
+    final cardWidth = screenWidth * 0.9;
+    final cardPadding = screenWidth * 0.06;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFFCF8F2),
+      backgroundColor: _bgLight,
       body: SafeArea(
         child: Consumer<AuthProvider>(
           builder: (context, authProvider, child) {
             final user = authProvider.user;
-            
+
             return SingleChildScrollView(
               child: Center(
                 child: Padding(
@@ -167,17 +175,17 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        // プロフィール画像
+                        // アバター
                         CircleAvatar(
                           radius: screenWidth * 0.15,
                           backgroundColor: _avatarBg,
-                          backgroundImage: user?.photoURL != null 
-                              ? NetworkImage(user!.photoURL!) 
+                          backgroundImage: user?.photoURL != null
+                              ? NetworkImage(user!.photoURL!)
                               : null,
                           child: user?.photoURL == null
                               ? Icon(
-                                  authProvider.isAnonymous 
-                                      ? Icons.person_outline 
+                                  authProvider.isAnonymous
+                                      ? Icons.person_outline
                                       : Icons.person,
                                   size: screenWidth * 0.2,
                                   color: _primaryGreen,
@@ -185,11 +193,13 @@ class ProfileScreen extends StatelessWidget {
                               : null,
                         ),
                         SizedBox(height: screenHeight * 0.03),
-                        
-                        // 表示名
+
+                        // 名前
                         Text(
-                          user?.displayName ?? 
-                              (authProvider.isAnonymous ? 'ゲストユーザー' : 'ユーザー'),
+                          user?.displayName ??
+                              (authProvider.isAnonymous
+                                  ? 'ゲストユーザー'
+                                  : 'ユーザー'),
                           style: TextStyle(
                             fontSize: screenWidth * 0.06,
                             fontWeight: FontWeight.bold,
@@ -197,17 +207,18 @@ class ProfileScreen extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: screenHeight * 0.01),
-                        
-                        // メールアドレス
+
+                        // メール
                         Text(
-                          user?.email ?? (authProvider.isAnonymous ? 'ゲストアカウント' : ''),
+                          user?.email ??
+                              (authProvider.isAnonymous ? 'ゲストアカウント' : ''),
                           style: TextStyle(
                             fontSize: screenWidth * 0.04,
                             color: Colors.black87,
                           ),
                         ),
-                        
-                        // 匿名ユーザー向けの注意
+
+                        // ゲスト警告
                         if (authProvider.isAnonymous) ...[
                           SizedBox(height: screenHeight * 0.02),
                           Container(
@@ -219,8 +230,8 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             child: Row(
                               children: [
-                                Icon(Icons.info_outline, 
-                                     color: Colors.orange[700], size: 20),
+                                Icon(Icons.info_outline,
+                                    color: Colors.orange[700], size: 20),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
@@ -235,48 +246,74 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ),
                         ],
-                        
+
                         SizedBox(height: screenHeight * 0.05),
-                        
+
                         // ボタン群
                         if (!authProvider.isAnonymous) ...[
-                          _buildButton(context, Icons.edit, 'プロフィール編集', () {
-                            Navigator.pushNamed(context, '/profileedit');
-                          }),
+                          _buildButton(
+                            context,
+                            Icons.edit,
+                            'プロフィール編集',
+                            () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => ProfileEditScreen(),
+                                ),
+                              );
+                            },
+                          ),
                           SizedBox(height: screenHeight * 0.02),
                         ],
-                        
                         if (authProvider.isAnonymous) ...[
-                          _buildButton(context, Icons.person_add, 'アカウント作成', () {
-                            _showLinkAccountDialog(context, authProvider);
-                          }),
+                          _buildButton(
+                            context,
+                            Icons.person_add,
+                            'アカウント作成',
+                            () => _showLinkAccountDialog(
+                                context, authProvider),
+                          ),
                           SizedBox(height: screenHeight * 0.02),
                         ],
-                        
-                        _buildButton(context, Icons.help_outline, 'ヘルプ', () {
-                          // TODO: ヘルプ画面の実装
-                        }),
+                        _buildButton(
+                          context,
+                          Icons.help_outline,
+                          'ヘルプ',
+                          () {
+                            // TODO: ヘルプ画面
+                          },
+                        ),
                         SizedBox(height: screenHeight * 0.02),
-                        
-                        _buildButton(context, Icons.logout, 'ログアウト', () {
-                          _showLogoutDialog(context, authProvider);
-                        }),
-                        
+                        _buildButton(
+                          context,
+                          Icons.logout,
+                          'ログアウト',
+                          () => _showLogoutDialog(context, authProvider),
+                        ),
                         if (!authProvider.isAnonymous) ...[
                           SizedBox(height: screenHeight * 0.02),
-                          _buildButton(context, Icons.lock, 'パスワードリセット', () async {
-                            if (user?.email != null) {
-                              final success = await authProvider.sendPasswordResetEmail(user!.email!);
-                              if (success && context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('パスワードリセットメールを送信しました'),
-                                    backgroundColor: Colors.green,
-                                  ),
-                                );
+                          _buildButton(
+                            context,
+                            Icons.lock,
+                            'パスワードリセット',
+                            () async {
+                              final email = user?.email;
+                              if (email != null) {
+                                final ok = await authProvider
+                                    .sendPasswordResetEmail(email);
+                                if (ok && context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: const Text(
+                                          'パスワードリセットメールを送信しました'),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                }
                               }
-                            }
-                          }),
+                            },
+                          ),
                         ],
                       ],
                     ),
@@ -287,7 +324,9 @@ class ProfileScreen extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+
+      // 下ナビ
+      bottomNavigationBar: embedded ? null : BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 4,
         selectedItemColor: _primaryGreen,
@@ -301,21 +340,20 @@ class ProfileScreen extends StatelessWidget {
         ],
         onTap: (index) {
           switch (index) {
-            case 0:
-              Navigator.pushReplacementNamed(context, '/');
-              break;
-            case 1:
-              Navigator.pushNamed(context, '/map');
-              break;
-            case 2:
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('ARカメラ機能は開発中です')),
+            case 0: // ホーム
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => HomeScreen()),
               );
               break;
-            case 3:
-              Navigator.pushNamed(context, '/collection');
+            case 2: // ARカメラ
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const UnityWebViewPage()),
+              );
               break;
-            case 4:
+            default:
+              // 必要に応じて実装
               break;
           }
         },
@@ -323,7 +361,12 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(BuildContext context, IconData icon, String label, VoidCallback onPressed) {
+  Widget _buildButton(
+    BuildContext context,
+    IconData icon,
+    String label,
+    VoidCallback onPressed,
+  ) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -339,7 +382,9 @@ class ProfileScreen extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         backgroundColor: _bgLight,
         side: const BorderSide(color: _borderRed),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+        ),
         padding: EdgeInsets.symmetric(
           vertical: screenHeight * 0.02,
           horizontal: screenWidth * 0.05,

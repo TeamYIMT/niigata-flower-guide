@@ -14,7 +14,8 @@ import 'package:niigata_flower_guide/models/spot.dart';
 import '../providers/stamp_provider.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({Key? key}) : super(key: key);
+  final bool embedded;
+  const MapScreen({Key? key, this.embedded = false}) : super(key: key);
   @override
   _MapScreenState createState() => _MapScreenState();
 }
@@ -289,7 +290,6 @@ class _MapScreenState extends State<MapScreen> {
             ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNav(context),
     );
   }
 

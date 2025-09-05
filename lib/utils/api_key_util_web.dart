@@ -1,5 +1,5 @@
-import 'dart:js' as js;
+import 'dart:html' as html;
 
 String getGoogleMapsApiKey() {
-  return js.context['GOOGLE_MAPS_API_KEY'] as String? ?? '';
+  return html.window.localStorage['GOOGLE_MAPS_API_KEY'] ?? '';
 } 
