@@ -32,10 +32,10 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         },
       ),
-      MapScreen(),                           // マップ
+      const MapScreen(embedded: true),       // マップ
       const SizedBox.shrink(),               // AR（ページは持たない）
       const StampCollectionScreen(embedded: true), // コレクション（親に埋め込み）
-      const ProfileScreen(),                 // プロフィール
+      const ProfileScreen(embedded: true),   // プロフィール
     ];
 
     return Scaffold(

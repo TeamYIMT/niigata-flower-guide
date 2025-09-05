@@ -7,7 +7,8 @@ import 'home_screen.dart';
 import 'profileedit_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  final bool embedded;
+  const ProfileScreen({super.key, this.embedded = false});
 
   static const _primaryGreen = Color(0xFF4CAF50);
   static const _bgLight = Color(0xFFFCF8F2);
@@ -325,7 +326,7 @@ class ProfileScreen extends StatelessWidget {
       ),
 
       // 下ナビ
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: embedded ? null : BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 4,
         selectedItemColor: _primaryGreen,
