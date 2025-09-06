@@ -52,26 +52,34 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            // タイトル
-            Text(
-              'Niigata 花図鑑',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: const Color(0xFF3E5C40),
-                    fontWeight: FontWeight.bold,
+            // タイトル＋サブタイトル＋グリッド（全体で左右16を共有し、左端を完全に揃える）
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Niigata 花図鑑',
+                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                          color: const Color(0xFF3E5C40),
+                          fontWeight: FontWeight.bold,
+                        ),
                   ),
-            ),
-            const SizedBox(height: 16),
-              // グリッド
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 1,
-                  children: [
+                  const SizedBox(height: 4),
+                  const Text(
+                    '花をきっかけに、新潟の魅力を見つけよう。',
+                    style: TextStyle(color: Color(0xFF3E5C40)),
+                  ),
+                  const SizedBox(height: 16),
+                  // グリッド
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
+                    childAspectRatio: 1,
+                    children: [
                     IconTile(
                       icon: 'map_icon.png',
                       label: 'マップ',
@@ -108,10 +116,12 @@ class HomeScreen extends StatelessWidget {
                       padding: 12,
                       onTap: _openArPicker,
                     ),
-                  ],
-                ),
+                    ],
+                  ),
+              ],
               ),
-              const SizedBox(height: 16),
+            ),
+            const SizedBox(height: 16),
               
               // 近くのスポット情報
               Padding(

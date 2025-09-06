@@ -288,7 +288,7 @@ const List<Spot> spots = [
   ),
   Spot(
     id: 'gomadoyama-001',
-    title: '護摩堂山アジサイ園',
+    title: '護摩堂山あじさい園',
     location: '新潟県田上町田上（護摩堂山山頂付近）',
     image: 'assets/photos/ajisai1.JPG',
     images: [
