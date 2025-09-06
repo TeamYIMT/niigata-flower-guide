@@ -2,12 +2,33 @@ import 'package:flutter/material.dart';
 import '../widgets/icon_tile.dart';
 import '../widgets/nearby_spots_widget.dart';
 import 'map_screen.dart';
+import '../ar/ar_preview_launcher.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Future<void> _openArPreview(String flowerId) async {
+      final launcher = ArPreviewLauncher(
+        onMissingVideo: (msg) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(msg)),
+          );
+        },
+      );
+      await launcher.show(context, flowerId: flowerId);
+    }
+    Future<void> _openArPicker() async {
+      final launcher = ArPreviewLauncher(
+        onMissingVideo: (msg) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(msg)),
+          );
+        },
+      );
+      await launcher.pickAndShow(context);
+    }
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -85,7 +106,7 @@ class HomeScreen extends StatelessWidget {
                       iconSize: 40,
                       fontSize: 14,
                       padding: 12,
-                      onTap: () => Navigator.pushNamed(context, '/ar'),
+                      onTap: _openArPicker,
                     ),
                   ],
                 ),
@@ -115,7 +136,7 @@ class HomeScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/map');
               break;
             case 2:
-              Navigator.pushNamed(context, '/ar');
+              _openArPicker();
               break;
             case 3:
               Navigator.pushNamed(context, '/collection');

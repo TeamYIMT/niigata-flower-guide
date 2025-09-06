@@ -31,6 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
   js: ^0.7.2
+  video_player: ^2.9.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -48,6 +49,7 @@ dependencies:
   url_launcher: ^6.2.2
   share_plus: ^11.1.0
   path_provider: ^2.1.5
+  gallery_saver: ^2.3.2
   # flutter_unity_widget: ^2022.2.0  # Unity連携を一旦保留
 
 dev_dependencies:
@@ -105,3 +107,5 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/photos/
+    - assets/videos/

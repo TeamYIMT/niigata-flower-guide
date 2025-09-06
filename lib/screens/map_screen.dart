@@ -421,9 +421,7 @@ class _MapScreenState extends State<MapScreen> {
         unselectedItemColor: Colors.grey,
         onTap: (i) {
           if (i == 0) Navigator.pushReplacementNamed(context, '/');
-          if (i == 2) ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ARカメラ機能は開発中です')),
-          );
+          if (i == 2) Navigator.pushReplacementNamed(context, '/');
           if (i == 3) Navigator.pushNamed(context, '/collection');
           if (i == 4) Navigator.pushNamed(context, '/profile');
         },

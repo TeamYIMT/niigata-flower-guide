@@ -253,7 +253,7 @@ class StampCollectionScreen extends StatelessWidget {
                         Navigator.pushNamed(context, '/map');
                         break;
                       case 2:
-                        Navigator.pushNamed(context, '/ar');
+                        Navigator.pushNamed(context, '/');
                         break;
                       case 4:
                         Navigator.pushNamed(context, '/profile');
