@@ -73,8 +73,8 @@ Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     
-    // デモモードでのジオロケーション偽装設定
-    if (kDebugMode && _DemoConfig.demoMode) {
+    // デモモードでのジオロケーション偽装設定（Release でも DEMO=true 指定で有効）
+    if (_DemoConfig.demoMode) {
       // 新潟県の中心付近を偽装位置として設定
       final fakePosition = Position(
         latitude: 37.9026,

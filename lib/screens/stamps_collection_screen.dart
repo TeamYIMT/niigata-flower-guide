@@ -98,8 +98,8 @@ class StampCollectionScreen extends StatelessWidget {
                         );
                       }
 
-                      // デモスポットを除いた実際のスポット一覧を取得
-                      final actualSpots = spots.where((spot) => !spot.isDemo).toList();
+                      // デモ／実スポットをまとめて受け取り、距離判定結果で絞り込む
+                      final actualSpots = spots;
                       final stamps = stampProvider.stamps;
 
                       return Padding(
@@ -187,12 +187,9 @@ class StampCollectionScreen extends StatelessWidget {
                 // 進捗表示とボトムナビゲーション
                 Consumer<StampProvider>(
                   builder: (context, stampProvider, child) {
-                    // 実際のスポット数（デモスポット除外）
-                    final total = spots.where((spot) => !spot.isDemo).length;
-                    final collectedCount = stampProvider.stamps
-                        .where((stamp) => !spots.any((spot) => 
-                            spot.isDemo && spot.title == stamp.spotTitle))
-                        .length;
+                    // 総スポット数（デモ含む）。表示は LocationService の結果に依存
+                    final total = spots.length;
+                    final collectedCount = stampProvider.stamps.length;
 
                     return Column(
                       children: [

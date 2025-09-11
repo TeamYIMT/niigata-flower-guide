@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:geolocator/geolocator.dart';
 import '../models/spot.dart';
 
@@ -72,8 +71,8 @@ class LocationService {
 
   // ユーザーがスポットの近くにいるかチェック
   static Future<bool> isNearSpot(Spot spot) async {
-    // デモスポット または デバッグモードでは常にtrue
-    if (spot.isDemo || (kDebugMode && _DemoConfig.demoMode)) {
+    // デモスポット または demoMode=true なら常に true（Release でも有効）
+    if (spot.isDemo || _DemoConfig.demoMode) {
       return true;
     }
 
@@ -135,8 +134,8 @@ class LocationService {
     List<Map<String, dynamic>> nearbySpots = [];
 
     for (Spot spot in spots) {
-      // デモスポット または デバッグモードの場合
-      if (spot.isDemo || (kDebugMode && _DemoConfig.demoMode)) {
+      // デモスポット または demoMode=true の場合は常に距離0mとして扱う
+      if (spot.isDemo || _DemoConfig.demoMode) {
         nearbySpots.add({
           'spot': spot,
           'distance': 0.0, // デモスポットは距離0として扱う

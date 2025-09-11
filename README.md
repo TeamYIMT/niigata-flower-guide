@@ -133,6 +133,49 @@ firebase init
 flutter run
 ```
 
+### デモモード切り替え（ビルドフラグ）
+
+開発・検証時はデモ用スポットを有効化できます。`--dart-define=DEMO=true` を付与してください。本番ビルドでは必ず `DEMO=false` にします。
+
+```bash
+# ローカル実行（Chrome）
+flutter run -d chrome --dart-define=DEMO=true
+
+# Web ビルド（develop 用）
+flutter build web --release \
+  --dart-define=DEMO=true \
+  --base-href "/<repo_name>/"
+
+# 本番（main 用）
+flutter build web --release \
+  --dart-define=DEMO=false \
+  --base-href "/<repo_name>/"
+```
+
+UI 層ではデモスポット（`isDemo=true`）をフィルタしません。距離判定は `LocationService` が行い、デモ時は距離 0m として表示されます。
+
+### GitHub Actions 例
+
+develop ブランチ（デモ ON）:
+
+```yaml
+- name: Build web
+  run: |
+    flutter build web --release \
+      --dart-define=DEMO=true \
+      --base-href "/${{ github.event.repository.name }}/"
+```
+
+main ブランチ（デモ OFF）:
+
+```yaml
+- name: Build web
+  run: |
+    flutter build web --release \
+      --dart-define=DEMO=false \
+      --base-href "/${{ github.event.repository.name }}/"
+```
+
 ## 使用技術
 
 - Flutter/Dart
