@@ -24,6 +24,8 @@ class _MapScreenState extends State<MapScreen> {
   GoogleMapController? _mapController;
   final Set<Marker> _markers = {};
   bool _isBottomSheetOpen = false;
+  // 現在地表示フラグ（暫定的に非表示にする場合は false のまま）
+  final bool _showUserLocation = false;
 
   // 検索機能の状態管理
   final TextEditingController _searchController = TextEditingController();
@@ -251,15 +253,15 @@ class _MapScreenState extends State<MapScreen> {
                           onMapCreated: (controller) {
                             _mapController = controller;
                           },
-                          myLocationEnabled: _currentPosition != null,
-                          myLocationButtonEnabled: true,
+                          myLocationEnabled: _showUserLocation && _currentPosition != null,
+                          myLocationButtonEnabled: _showUserLocation,
                           zoomGesturesEnabled: !_isBottomSheetOpen,
                           scrollGesturesEnabled: !_isBottomSheetOpen,
                           tiltGesturesEnabled: !_isBottomSheetOpen,
                           rotateGesturesEnabled: !_isBottomSheetOpen,
                           markers: {
                             ..._markers,
-                            if (_currentPosition != null)
+                            if (_showUserLocation && _currentPosition != null)
                               Marker(
                                 markerId: const MarkerId('currentLocation'),
                                 position: _currentPosition!,
@@ -421,9 +423,7 @@ class _MapScreenState extends State<MapScreen> {
         unselectedItemColor: Colors.grey,
         onTap: (i) {
           if (i == 0) Navigator.pushReplacementNamed(context, '/');
-          if (i == 2) ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('ARカメラ機能は開発中です')),
-          );
+          if (i == 2) Navigator.pushReplacementNamed(context, '/');
           if (i == 3) Navigator.pushNamed(context, '/collection');
           if (i == 4) Navigator.pushNamed(context, '/profile');
         },

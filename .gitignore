@@ -172,6 +172,8 @@ Desktop.ini
 # ===================================================================
 assets/images/laporteshoukai.jpg
 assets/photos/
+assets/videos/tulip.mp4
+assets/videos/README.md
 
 # ===================================================================
 # API keyなど
@@ -190,3 +192,5 @@ ios/Config/Keys.xcconfig
 /android/unityLibrary/.gradle/
 /android/unityLibrary/build/
 /android/unityLibrary/obj/
+
+ios/UnityLibrary/

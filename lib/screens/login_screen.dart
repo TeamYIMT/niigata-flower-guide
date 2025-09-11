@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                             const SizedBox(height: 8),
                             const Text(
-                              '花をきっかけに、新潟の魅力を発見する',
+                              '花をきっかけに、新潟の魅力を見つけよう。',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Color(0xFF3A5A40),

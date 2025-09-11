@@ -17,7 +17,8 @@ import 'screens/signup_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/profileedit_screen.dart';
 import 'screens/stamps_collection_screen.dart';
-// import 'screens/unity_ar_screen.dart';  // Unity連携を一旦保留
+// import 'screens/unity_ar_screen.dart';  // Unity連携（再有効化時に戻す）
+import 'screens/unity_ar_screen_stub.dart'; // 一時スタブ画面（Unity無効化中）
 
 // デモ設定クラス
 class _DemoConfig {
@@ -72,8 +73,8 @@ Future<void> main() async {
   try {
     WidgetsFlutterBinding.ensureInitialized();
     
-    // デモモードでのジオロケーション偽装設定
-    if (kDebugMode && _DemoConfig.demoMode) {
+    // デモモードでのジオロケーション偽装設定（Release でも DEMO=true 指定で有効）
+    if (_DemoConfig.demoMode) {
       // 新潟県の中心付近を偽装位置として設定
       final fakePosition = Position(
         latitude: 37.9026,
@@ -151,7 +152,8 @@ class NiigataFlowerGuide extends StatelessWidget {
               '/profile': (context) => const ProfileScreen(),
               '/profileedit': (context) => const ProfileEditScreen(),
               '/collection': (context) => const StampCollectionScreen(),
-              // '/ar': (context) => UnityARScreen(),  // Unity連携を一旦保留
+              // '/ar': (context) => UnityARScreen(), // Unity連携（再有効化時に戻す）
+              '/ar': (context) => const UnityArScreen(), // 一時スタブ
             },
           );
         },

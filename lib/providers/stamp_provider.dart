@@ -83,7 +83,7 @@ class StampProvider with ChangeNotifier {
   // デモモード用の匿名認証
   Future<void> _handleAnonymousAuth() async {
     try {
-      if (kDebugMode || _DemoConfig.demoMode) {
+      if (_DemoConfig.demoMode) {
         // デバッグモードまたはデモモードでは自動的に匿名認証
         await FirebaseAuth.instance.signInAnonymously();
         print('🧪 StampProvider: デモ用匿名認証を実行しました');
@@ -176,8 +176,8 @@ class StampProvider with ChangeNotifier {
         return false;
       }
 
-      // デモスポットまたはデバッグモードの場合
-      if (spot.isDemo || (kDebugMode && _DemoConfig.demoMode)) {
+      // デモスポットまたは demoMode=true の場合
+      if (spot.isDemo || _DemoConfig.demoMode) {
         print('🧪 デモスポット処理: ${spot.title}');
         
         // デモスポットでは位置情報を偽装

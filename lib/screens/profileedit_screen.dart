@@ -116,9 +116,7 @@ class ProfileEditScreen extends StatelessWidget {
               Navigator.pushNamed(context, '/map');
               break;
             case 2:
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('ARカメラ機能は開発中です')),
-              );
+              Navigator.pushReplacementNamed(context, '/');
               break;
             case 4:
               Navigator.pop(context);
