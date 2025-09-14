@@ -55,7 +55,7 @@ class TouristInfoCard extends StatelessWidget {
                     bottomRight: Radius.circular(12),
                   ),
                   child: Image.asset(
-                    'assets/images/laporteshoukai.jpg',
+                    'public/images/dummy/laporte_ai.png',
                     height: 160,
                     width: double.infinity,
                     fit: BoxFit.cover,

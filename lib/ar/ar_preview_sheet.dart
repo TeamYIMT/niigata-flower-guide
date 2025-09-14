@@ -55,75 +55,103 @@ class _ArPreviewSheetState extends State<ArPreviewSheet> {
   @override
   Widget build(BuildContext context) {
     final ratio = _ready ? _controller.value.aspectRatio : 16 / 9;
+    // 画面幅が広い Web 環境では縦長動画の高さがオーバーフローしやすい。
+    // ConstrainedBox で高さを制限し、ボタンを含む Stack が画面内に収まるようにする。
+    final maxVideoHeight = MediaQuery.of(context).size.height * 0.7;
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(8),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(widget.title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
-            Stack(
-              children: [
-                AspectRatio(
-                  aspectRatio: ratio,
-                  child: _ready
-                      ? VideoPlayer(_controller)
-                      : const Center(child: CircularProgressIndicator()),
-                ),
-                Positioned(
-                  right: 8,
-                  bottom: 8,
-                  child: FilledButton.icon(
-                    style: FilledButton.styleFrom(
-                      backgroundColor: widget.saveButtonColor,
-                      foregroundColor: widget.saveButtonForegroundColor,
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-                      minimumSize: const Size(0, 36),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxHeight: maxVideoHeight,
+                maxWidth: double.infinity,
+              ),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12), // ダイアログの角丸と合わせる
+                    child: AspectRatio(
+                      aspectRatio: ratio,
+                      child: _ready
+                          ? VideoPlayer(_controller)
+                          : const Center(child: CircularProgressIndicator()),
                     ),
-                    icon: _saving
-                        ? const SizedBox(
-                            width: 14,
-                            height: 14,
-                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                          )
-                        : const Icon(Icons.download, size: 18),
-                    label: Text(_saving ? '保存中…' : '保存する', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
-                    onPressed: _saving
-                        ? null
-                        : () async {
-                            setState(() => _saving = true);
-                            try {
-                              switch (widget.source.kind) {
-                                case VideoKind.asset:
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(content: Text('アセット動画の保存は現在未対応です')),
-                                  );
-                                  break;
-                                case VideoKind.network:
-                                  final ok = await GallerySaver.saveVideo(widget.source.pathOrUrl);
-                                  if (ok == true) {
-                                    if (!mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('保存しました')),
-                                    );
-                                  } else {
-                                    if (!mounted) return;
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(content: Text('保存に失敗しました')),
-                                    );
-                                  }
-                                  break;
-                              }
-                            } finally {
-                              if (mounted) setState(() => _saving = false);
-                            }
-                          },
                   ),
-                ),
-              ],
+                  Positioned(
+                    left: 8,
+                    bottom: 8,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: const Text(
+                        '※生成AIによるプレビュー動画です',
+                        style: TextStyle(fontSize: 10, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    right: 10,
+                    bottom: 14,
+                    child: FilledButton.icon(
+                      style: FilledButton.styleFrom(
+                        backgroundColor: widget.saveButtonColor,
+                        foregroundColor: widget.saveButtonForegroundColor,
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                        minimumSize: const Size(0, 36),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                      icon: _saving
+                          ? const SizedBox(
+                              width: 14,
+                              height: 14,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                            )
+                          : const Icon(Icons.download, size: 18),
+                      label: Text(_saving ? '保存中…' : '保存する', style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600)),
+                      onPressed: _saving
+                          ? null
+                          : () async {
+                              setState(() => _saving = true);
+                              try {
+                                switch (widget.source.kind) {
+                                  case VideoKind.asset:
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(content: Text('アセット動画の保存は現在未対応です')),
+                                    );
+                                    break;
+                                  case VideoKind.network:
+                                    final ok = await GallerySaver.saveVideo(widget.source.pathOrUrl);
+                                    if (ok == true) {
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('保存しました')),
+                                      );
+                                    } else {
+                                      if (!mounted) return;
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(content: Text('保存に失敗しました')),
+                                      );
+                                    }
+                                    break;
+                                }
+                              } finally {
+                                if (mounted) setState(() => _saving = false);
+                              }
+                            },
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 12),
             Row(

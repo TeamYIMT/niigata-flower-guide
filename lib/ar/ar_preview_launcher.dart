@@ -51,11 +51,12 @@ class ArPreviewLauncher {
       isScrollControlled: false,
       useSafeArea: true,
       builder: (ctx) {
-        Widget buildItem(String id, String label, IconData icon) {
+        Widget buildItem(String id, String label, IconData icon, {required bool enabled}) {
           return ListTile(
-            leading: Icon(icon),
-            title: Text(label),
-            onTap: () => Navigator.of(ctx).pop(id),
+            enabled: enabled,
+            leading: Icon(icon, color: enabled ? null : Colors.grey),
+            title: Text(label, style: enabled ? null : const TextStyle(color: Colors.grey)),
+            onTap: enabled ? () => Navigator.of(ctx).pop(id) : null,
           );
         }
 
@@ -67,11 +68,11 @@ class ArPreviewLauncher {
                 padding: EdgeInsets.all(12),
                 child: Text('花を選択', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
               ),
-              buildItem('tulip', 'チューリップ', Icons.local_florist),
-              buildItem('hydrangea', 'アジサイ', Icons.local_florist),
-              buildItem('sakura', '桜', Icons.local_florist),
-              buildItem('rapeblossoms', '菜の花', Icons.local_florist),
-              buildItem('lotus', 'ハス', Icons.local_florist),
+              buildItem('tulip', 'チューリップ', Icons.local_florist, enabled: true),
+              buildItem('hydrangea', 'アジサイ', Icons.local_florist, enabled: false),
+              buildItem('sakura', '桜', Icons.local_florist, enabled: false),
+              buildItem('rapeblossoms', '菜の花', Icons.local_florist, enabled: false),
+              buildItem('lotus', 'ハス', Icons.local_florist, enabled: false),
               const SizedBox(height: 8),
             ],
           ),

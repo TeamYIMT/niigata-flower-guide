@@ -109,3 +109,4 @@ flutter:
     - assets/images/
     - assets/photos/
     - assets/videos/
+    - public/images/dummy/
