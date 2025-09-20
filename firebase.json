@@ -1,0 +1,18 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      { "source": "/api/plan", "function": { "functionId": "plan", "region": "asia-northeast1" } }
+    ]
+  }
+}
+
+

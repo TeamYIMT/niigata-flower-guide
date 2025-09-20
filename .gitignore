@@ -193,3 +193,27 @@ ios/Config/Keys.xcconfig
 /android/unityLibrary/obj/
 
 ios/UnityLibrary/
+
+# ===================================================================
+# Firebase / Cloud Functions (TypeScript)
+# ===================================================================
+
+# Node modules (不要: 重い依存は追跡しない)
+functions/node_modules/
+
+# トランスパイル成果物（tsc出力）。CI/ローカルで再生成可能
+functions/lib/
+
+# Functions ローカル設定/キャッシュ
+functions/.runtimeconfig.json
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+storage-debug.log
+pubsub-debug.log
+database-debug.log
+emulator-debug.log
+
+# TypeScript ビルド情報（必要時に生成）
+functions/*.tsbuildinfo
