@@ -52,6 +52,7 @@ dependencies:
   share_plus: ^11.1.0
   path_provider: ^2.1.5
   gallery_saver: ^2.3.2
+  shared_preferences: ^2.3.3
   # flutter_unity_widget: ^2022.2.0  # Unity連携を一旦保留
 
 dev_dependencies:
