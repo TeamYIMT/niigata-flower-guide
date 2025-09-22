@@ -3,6 +3,7 @@ name: Firebase Hosting Preview (hackathon-2025)
 on:
   push:
     branches: [ hackathon-2025 ]
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -19,15 +20,22 @@ jobs:
       - name: Install Firebase Tools
         run: npm i -g firebase-tools
 
-      - name: Build Flutter Web
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: 'stable'
-      - run: flutter pub get
-      - run: flutter build web --release
+          channel: 'stable'
+          cache: true
+      - name: Build Flutter Web
+        run: |
+          flutter --version
+          flutter pub get
+          flutter build web --release
 
       - name: Deploy to Firebase Hosting (preview channel)
         run: |
-          firebase deploy --only hosting --project ${{ secrets.FIREBASE_PROJECT_ID }} --message "CI preview for hackathon-2025" --non-interactive --token ${{ secrets.FIREBASE_TOKEN }} --channel "hackathon-2025"
+          firebase hosting:channel:deploy hackathon-2025 \
+            --project ${{ secrets.FIREBASE_PROJECT_ID }} \
+            --token ${{ secrets.FIREBASE_TOKEN }} \
+            --non-interactive
 
 
