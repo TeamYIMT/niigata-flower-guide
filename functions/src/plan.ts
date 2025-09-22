@@ -74,7 +74,8 @@ function preprocess(spots: Spot[], origin: {lat:number;lng:number}, keywords: st
   // 距離ソートし、上位をサブセットに
   const withDist = filtered.map(s => ({ s, d: haversineMeters(origin, {lat:s.lat, lng:s.lng}) }));
   withDist.sort((a,b) => a.d - b.d);
-  return withDist.slice(0, Math.min(30, withDist.length)).map(x => x.s);
+  // コスト最適化: モデル入力の候補を最大12件に圧縮
+  return withDist.slice(0, Math.min(12, withDist.length)).map(x => x.s);
 }
 
 function fallbackPlan(candidates: Spot[], origin: {lat:number;lng:number}, durationHours: number) {
