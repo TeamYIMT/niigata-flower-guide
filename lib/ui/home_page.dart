@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import '../services/plan_api.dart';
 import '../data/spot.dart';
 import '../data/spot_repository.dart';
@@ -21,8 +22,10 @@ class _HomePageState extends State<HomePage> {
   final keywordsController = TextEditingController(text: 'sakura,park');
   bool includePoi = true;
 
-  // Functionsエミュレータ（デフォルト 5001）へ直接POST（WebのCORS/リライト依存を避ける）
-  final planApi = PlanApi(baseUrl: 'http://localhost:5001', path: '/flower-guide-hackathon-2025/asia-northeast1/plan');
+  // Web本番は相対パスで Functions（/api/plan）。ローカル開発はエミュ直POST。
+  late final PlanApi planApi = kIsWeb
+      ? PlanApi(baseUrl: '', path: '/api/plan')
+      : PlanApi(baseUrl: 'http://127.0.0.1:5001', path: '/flower-guide-hackathon-2025/asia-northeast1/plan');
   Map<String, dynamic>? lastPlan;
   bool loading = false;
   String? error;
