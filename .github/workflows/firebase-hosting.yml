@@ -31,6 +31,9 @@ jobs:
           flutter pub get
           flutter build web --release -t lib/hackathon/main_hackathon.dart
 
+      - name: Inject Google Maps API key
+        run: sed -i 's/MAPS_API_KEY/${{ secrets.GOOGLE_MAPS_API_KEY }}/g' build/web/index.html
+
       - name: Deploy to Firebase Hosting (preview channel)
         run: |
           firebase hosting:channel:deploy hackathon-2025 \
