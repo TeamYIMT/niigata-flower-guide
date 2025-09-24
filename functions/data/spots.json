@@ -8,100 +8,33 @@
   {"id":"s7","name":"上堰潟公園 菜の花","prefecture":"Niigata","lat":37.7571,"lng":138.8809,"tags":["flower","nanohana","park"],"seasons":["spring"]},
   {"id":"s8","name":"長岡 東山ファミリーランド コスモス","prefecture":"Niigata","lat":37.4488,"lng":138.8885,"tags":["flower","cosmos"],"seasons":["autumn"]},
   {"id":"s9","name":"月岡温泉 足湯","prefecture":"Niigata","lat":37.8853,"lng":139.3335,"tags":["poi","onsen"],"seasons":["all"]},
-  {"id":"s10","name":"瓢湖 白鳥見学","prefecture":"Niigata","lat":37.8336,"lng":139.2409,"tags":["poi","wildlife"],"seasons":["winter"]}
-]
-
-[
-  {
-    "id": "s1",
-    "name": "新潟市中央公園",
-    "prefecture": "Niigata",
-    "lat": 37.9161,
-    "lng": 139.0364,
-    "tags": ["flower", "park"],
-    "seasons": ["spring", "summer"]
-  },
-  {
-    "id": "s2",
-    "name": "やすらぎ堤 桜並木",
-    "prefecture": "Niigata",
-    "lat": 37.9187,
-    "lng": 139.0421,
-    "tags": ["flower", "sakura"],
-    "seasons": ["spring"]
-  },
-  {
-    "id": "s3",
-    "name": "福島潟 菜の花",
-    "prefecture": "Niigata",
-    "lat": 37.9455,
-    "lng": 139.2239,
-    "tags": ["flower", "nanohana"],
-    "seasons": ["spring"]
-  },
-  {
-    "id": "s4",
-    "name": "弥彦公園 もみじ谷",
-    "prefecture": "Niigata",
-    "lat": 37.6889,
-    "lng": 138.8567,
-    "tags": ["poi", "maple"],
-    "seasons": ["autumn"]
-  },
-  {
-    "id": "s5",
-    "name": "国営越後丘陵公園",
-    "prefecture": "Niigata",
-    "lat": 37.4201,
-    "lng": 138.7963,
-    "tags": ["flower", "park", "tulip"],
-    "seasons": ["spring"]
-  },
-  {
-    "id": "s6",
-    "name": "北方文化博物館 あじさい",
-    "prefecture": "Niigata",
-    "lat": 37.8672,
-    "lng": 139.1146,
-    "tags": ["flower", "ajisai"],
-    "seasons": ["rainy", "summer"]
-  },
-  {
-    "id": "s7",
-    "name": "上堰潟公園 菜の花",
-    "prefecture": "Niigata",
-    "lat": 37.7571,
-    "lng": 138.8809,
-    "tags": ["flower", "nanohana", "park"],
-    "seasons": ["spring"]
-  },
-  {
-    "id": "s8",
-    "name": "長岡 東山ファミリーランド コスモス",
-    "prefecture": "Niigata",
-    "lat": 37.4488,
-    "lng": 138.8885,
-    "tags": ["flower", "cosmos"],
-    "seasons": ["autumn"]
-  },
-  {
-    "id": "s9",
-    "name": "月岡温泉 足湯",
-    "prefecture": "Niigata",
-    "lat": 37.8853,
-    "lng": 139.3335,
-    "tags": ["poi", "onsen"],
-    "seasons": ["all"]
-  },
-  {
-    "id": "s10",
-    "name": "瓢湖 白鳥見学",
-    "prefecture": "Niigata",
-    "lat": 37.8336,
-    "lng": 139.2409,
-    "tags": ["poi", "wildlife"],
-    "seasons": ["winter"]
-  }
+  {"id":"s10","name":"瓢湖 白鳥見学","prefecture":"Niigata","lat":37.8336,"lng":139.2409,"tags":["poi","wildlife"],"seasons":["winter"]},
+  {"id":"s11","name":"白山公園","prefecture":"Niigata","lat":37.9191,"lng":139.0432,"tags":["flower","park","sakura"],"seasons":["spring"]},
+  {"id":"s12","name":"鳥屋野潟公園","prefecture":"Niigata","lat":37.8877,"lng":139.0511,"tags":["flower","park","ajisai"],"seasons":["summer","rainy"]},
+  {"id":"s13","name":"新潟駅 万代口周辺","prefecture":"Niigata","lat":37.9138,"lng":139.0612,"tags":["poi","station"],"seasons":["all"]},
+  {"id":"s14","name":"新津フラワーランド","prefecture":"Niigata","lat":37.8009,"lng":139.1175,"tags":["flower","garden"],"seasons":["spring","summer","autumn"]},
+  {"id":"s15","name":"いくとぴあ食花","prefecture":"Niigata","lat":37.8935,"lng":139.0206,"tags":["flower","garden","family"],"seasons":["spring","summer"]},
+  {"id":"s16","name":"信濃川やすらぎ堤 ライトアップ","prefecture":"Niigata","lat":37.9169,"lng":139.0369,"tags":["poi","night"],"seasons":["all"]},
+  {"id":"s17","name":"東区プラント5周辺 桜","prefecture":"Niigata","lat":37.9165,"lng":139.1011,"tags":["flower","sakura"],"seasons":["spring"]},
+  {"id":"s18","name":"護摩堂山 あじさい","prefecture":"Niigata","lat":37.7583,"lng":139.0622,"tags":["flower","ajisai","hike"],"seasons":["rainy","summer"]},
+  {"id":"s19","name":"弥彦神社 参道","prefecture":"Niigata","lat":37.6883,"lng":138.8562,"tags":["poi","temple","maple"],"seasons":["autumn"]},
+  {"id":"s20","name":"寺泊 魚の市場通り","prefecture":"Niigata","lat":37.6352,"lng":138.8079,"tags":["poi","food"],"seasons":["all"]},
+  {"id":"s21","name":"長岡市越路河川公園 チューリップ","prefecture":"Niigata","lat":37.4209,"lng":138.8161,"tags":["flower","tulip","park"],"seasons":["spring"]},
+  {"id":"s22","name":"柏崎 夢の森公園","prefecture":"Niigata","lat":37.3651,"lng":138.6043,"tags":["flower","park","wetland"],"seasons":["spring","summer"]},
+  {"id":"s23","name":"上越高田公園 桜","prefecture":"Niigata","lat":37.1141,"lng":138.2535,"tags":["flower","sakura","park"],"seasons":["spring"]},
+  {"id":"s24","name":"直江津 海岸散策","prefecture":"Niigata","lat":37.1744,"lng":138.2362,"tags":["poi","coast"],"seasons":["summer"]},
+  {"id":"s25","name":"妙高 高原のコスモス","prefecture":"Niigata","lat":36.9002,"lng":138.1964,"tags":["flower","cosmos","highland"],"seasons":["autumn"]},
+  {"id":"s26","name":"見附 市民の花公園","prefecture":"Niigata","lat":37.5404,"lng":138.9492,"tags":["flower","park"],"seasons":["spring","summer"]},
+  {"id":"s27","name":"三条 燕三条地場センター","prefecture":"Niigata","lat":37.6343,"lng":138.9519,"tags":["poi","craft"],"seasons":["all"]},
+  {"id":"s28","name":"燕 白山神社 あじさい","prefecture":"Niigata","lat":37.6531,"lng":138.9122,"tags":["flower","ajisai","temple"],"seasons":["rainy","summer"]},
+  {"id":"s29","name":"阿賀野 五頭山麓 彼岸花","prefecture":"Niigata","lat":37.8204,"lng":139.3077,"tags":["flower","higanbana"],"seasons":["autumn"]},
+  {"id":"s30","name":"村上 笹川流れ 景観","prefecture":"Niigata","lat":38.2465,"lng":139.3732,"tags":["poi","coast"],"seasons":["summer"]},
+  {"id":"s31","name":"津南 ひまわり広場","prefecture":"Niigata","lat":37.0122,"lng":138.6475,"tags":["flower","himawari","field","event"],"seasons":["summer"]},
+  {"id":"s32","name":"新潟県立植物園 睡蓮・蓮","prefecture":"Niigata","lat":37.8250,"lng":139.1400,"tags":["flower","lotus","garden"],"seasons":["summer"]},
+  {"id":"s33","name":"越後丘陵公園 ひまわり","prefecture":"Niigata","lat":37.4201,"lng":138.7963,"tags":["flower","himawari","park"],"seasons":["summer"]},
+  {"id":"s34","name":"妙高 池の平高原 雪景","prefecture":"Niigata","lat":36.8870,"lng":138.1780,"tags":["poi","snow","winter-view"],"seasons":["winter"]},
+  {"id":"s35","name":"十日町 里山の雪原アート","prefecture":"Niigata","lat":37.1340,"lng":138.7649,"tags":["poi","snow","art"],"seasons":["winter"]},
+  {"id":"s36","name":"瓢湖 蓮の花","prefecture":"Niigata","lat":37.8336,"lng":139.2409,"tags":["flower","lotus","lake"],"seasons":["summer"]}
 ]
 
 
