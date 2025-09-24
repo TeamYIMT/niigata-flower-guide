@@ -179,7 +179,9 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Row(
+      body: SafeArea(
+        child: SizedBox.expand(
+          child: Row(
         children: [
           Expanded(
             flex: 2,
@@ -252,10 +254,14 @@ class _HomePageState extends State<HomePage> {
               initialCameraPosition: CameraPosition(target: latLng, zoom: 11),
               markers: markers,
               polylines: polylines,
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
               onMapCreated: (c) => mapController.complete(c),
             ),
           ),
         ],
+          ),
+        ),
       ),
     );
   }
