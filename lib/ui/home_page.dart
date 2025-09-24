@@ -170,7 +170,14 @@ class _HomePageState extends State<HomePage> {
     final latLng = LatLng(37.9161, 139.0364);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('ハッカソンMVP'),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Image.asset('assets/images/logo.png', height: 28, errorBuilder: (_, __, ___) => const SizedBox.shrink()),
+            const SizedBox(width: 8),
+            const Text('花めぐりパス'),
+          ],
+        ),
         actions: [
           IconButton(
             tooltip: 'ルートにズーム',
@@ -180,53 +187,73 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       body: SafeArea(
-        child: SizedBox.expand(
-          child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final map = GoogleMap(
+              initialCameraPosition: CameraPosition(target: latLng, zoom: 11),
+              markers: markers,
+              polylines: polylines,
+              zoomControlsEnabled: false,
+              myLocationButtonEnabled: false,
+              onMapCreated: (c) => mapController.complete(c),
+            );
+
+            Widget formPanel = SingleChildScrollView(
               padding: const EdgeInsets.all(16),
               child: Form(
                 key: formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextFormField(
-                      controller: originController,
-                      decoration: const InputDecoration(labelText: '出発地 (lat,lng)'),
-                    ),
-                    TextFormField(
-                      controller: durationController,
-                      decoration: const InputDecoration(labelText: '所要時間(時間)'),
-                      keyboardType: TextInputType.number,
-                    ),
-                    TextFormField(
-                      controller: keywordsController,
-                      decoration: const InputDecoration(labelText: 'キーワード(カンマ区切り)'),
-                    ),
-                    SwitchListTile(
-                      value: includePoi,
-                      onChanged: (v) => setState(() => includePoi = v),
-                      title: const Text('周辺POIを含める'),
-                    ),
-                    const SizedBox(height: 8),
-                    FilledButton.icon(
-                      onPressed: loading ? null : _submit,
-                      icon: const Icon(Icons.auto_awesome),
-                      label: const Text('AIにおまかせ'),
-                    ),
-                    if (loading) const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 12),
-                      child: LinearProgressIndicator(),
-                    ),
-                    if (error != null)
-                      Row(
-                        children: [
-                          Expanded(child: Text(error!, style: const TextStyle(color: Colors.red))),
-                          TextButton(onPressed: loading ? null : _submit, child: const Text('再試行')),
-                        ],
+                    Card(
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12), side: BorderSide(color: Theme.of(context).dividerColor)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('条件', style: TextStyle(fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 12),
+                            TextFormField(
+                              controller: originController,
+                              decoration: const InputDecoration(labelText: '出発地 (lat,lng)'),
+                            ),
+                            TextFormField(
+                              controller: durationController,
+                              decoration: const InputDecoration(labelText: '所要時間(時間)'),
+                              keyboardType: TextInputType.number,
+                            ),
+                            TextFormField(
+                              controller: keywordsController,
+                              decoration: const InputDecoration(labelText: 'キーワード(カンマ区切り)'),
+                            ),
+                            SwitchListTile(
+                              value: includePoi,
+                              onChanged: (v) => setState(() => includePoi = v),
+                              title: const Text('周辺POIを含める'),
+                            ),
+                            const SizedBox(height: 8),
+                            FilledButton.icon(
+                              onPressed: loading ? null : _submit,
+                              icon: const Icon(Icons.auto_awesome),
+                              label: const Text('AIにおまかせ'),
+                            ),
+                            if (loading) const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 12),
+                              child: LinearProgressIndicator(),
+                            ),
+                            if (error != null)
+                              Row(
+                                children: [
+                                  Expanded(child: Text(error!, style: const TextStyle(color: Colors.red))),
+                                  TextButton(onPressed: loading ? null : _submit, child: const Text('再試行')),
+                                ],
+                              ),
+                          ],
+                        ),
                       ),
+                    ),
                     const SizedBox(height: 12),
                     if (lastPlan != null) ...[
                       const Text('提案結果', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -246,21 +273,27 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: GoogleMap(
-              initialCameraPosition: CameraPosition(target: latLng, zoom: 11),
-              markers: markers,
-              polylines: polylines,
-              zoomControlsEnabled: false,
-              myLocationButtonEnabled: false,
-              onMapCreated: (c) => mapController.complete(c),
-            ),
-          ),
-        ],
-          ),
+            );
+
+            if (constraints.maxWidth < 900) {
+              // 縦レイアウト（モバイル/タブレット）
+              return Column(
+                children: [
+                  Expanded(flex: 3, child: formPanel),
+                  const Divider(height: 1),
+                  SizedBox(height: 360, child: map),
+                ],
+              );
+            }
+            // 横レイアウト（デスクトップ）
+            return Row(
+              children: [
+                SizedBox(width: 380, child: formPanel),
+                const VerticalDivider(width: 1),
+                Expanded(child: map),
+              ],
+            );
+          },
         ),
       ),
     );
